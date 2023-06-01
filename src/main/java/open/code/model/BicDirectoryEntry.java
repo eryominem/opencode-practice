@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 public class BicDirectoryEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long bicDirectoryEntryId;
 
     private String BIC;
 
@@ -21,7 +22,7 @@ public class BicDirectoryEntry {
     @JoinColumn(name = "ParticipantInfo_id")
     private ParticipantInfo participantInfo;
 
-    @OneToMany(mappedBy = "account_id")
+    @OneToMany(mappedBy = "accountId")
     private Set<Account> account;
 
     @ManyToOne
@@ -39,19 +40,19 @@ public class BicDirectoryEntry {
     }
 
     public long getId() {
-        return id;
+        return bicDirectoryEntryId;
     }
 
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long bicDirectoryEntryId) {
+        this.bicDirectoryEntryId = bicDirectoryEntryId;
     }
 
     public String getBIC() {
         return BIC;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setBIC(String BIC) {
         this.BIC = BIC;
     }
@@ -60,7 +61,7 @@ public class BicDirectoryEntry {
         return participantInfo;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setParticipantInfo(ParticipantInfo participantInfo) {
         this.participantInfo = participantInfo;
     }
@@ -69,7 +70,7 @@ public class BicDirectoryEntry {
         return account;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setAccount(Set<Account> account) {
         this.account = account;
     }
@@ -78,7 +79,7 @@ public class BicDirectoryEntry {
         return bankMessage;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setBankMessage(BankMessage bankMessage) {
         this.bankMessage = bankMessage;
     }

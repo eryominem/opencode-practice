@@ -15,7 +15,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient
-    private long id;
+    private long accountId;
 
     private String account;
 
@@ -48,11 +48,11 @@ public class Account {
     }
 
     public long getId() {
-        return id;
+        return accountId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long accountId) {
+        this.accountId = accountId;
     }
 
     public String getAccount() {

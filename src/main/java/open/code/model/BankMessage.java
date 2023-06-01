@@ -1,6 +1,7 @@
 package open.code.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
@@ -34,7 +35,7 @@ public class BankMessage {
 
     private int directoryVersion;
 
-    @OneToMany(mappedBy = "BicDirectoryEntry_id")
+    @OneToMany(mappedBy = "bicDirectoryEntryId")
     private Set<BicDirectoryEntry> bicDirectoryEntries;
 
     public BankMessage() {
@@ -65,7 +66,7 @@ public class BankMessage {
         return eDNo;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setEDNo(String eDNo) {
         this.eDNo = eDNo;
     }
@@ -74,7 +75,7 @@ public class BankMessage {
         return eDDate;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setEDDate(LocalDate eDDate) {
         this.eDDate = eDDate;
     }
@@ -83,7 +84,7 @@ public class BankMessage {
         return eDAuthor;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setEDAuthor(String eDAuthor) {
         this.eDAuthor = eDAuthor;
     }
@@ -92,7 +93,7 @@ public class BankMessage {
         return creationReason;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setCreationReason(String creationReason) {
         this.creationReason = creationReason;
     }
@@ -101,7 +102,7 @@ public class BankMessage {
         return creationDateTime;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setCreationDateTime(LocalDateTime creationDateTime) {
         this.creationDateTime = creationDateTime;
     }
@@ -110,7 +111,7 @@ public class BankMessage {
         return infoTypeCode;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setInfoTypeCode(String infoTypeCode) {
         this.infoTypeCode = infoTypeCode;
     }
@@ -119,7 +120,7 @@ public class BankMessage {
         return businessDay;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setBusinessDay(LocalDate businessDay) {
         this.businessDay = businessDay;
     }
@@ -128,7 +129,7 @@ public class BankMessage {
         return directoryVersion;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setDirectoryVersion(int directoryVersion) {
         this.directoryVersion = directoryVersion;
     }
@@ -137,7 +138,7 @@ public class BankMessage {
         return bicDirectoryEntries;
     }
 
-    @XmlTransient
+    @XmlElement
     public void setBicDirectoryEntries(Set<BicDirectoryEntry> bicDirectoryEntries) {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }

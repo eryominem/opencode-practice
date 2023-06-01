@@ -1,13 +1,20 @@
 package open.code.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDate;
 
 @Entity
+@XmlRootElement(name = "accounts")
+@XmlType(propOrder = {"Account", "RegulationAccountType", "CK", "AccountCBRBIC", "DateIn", "AccountStatus"})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private long id;
 
     private String account;
@@ -52,6 +59,7 @@ public class Account {
         return account;
     }
 
+    @XmlElement
     public void setAccount(String account) {
         this.account = account;
     }
@@ -60,6 +68,7 @@ public class Account {
         return regulationAccountType;
     }
 
+    @XmlElement
     public void setRegulationAccountType(String regulationAccountType) {
         this.regulationAccountType = regulationAccountType;
     }
@@ -68,6 +77,7 @@ public class Account {
         return CK;
     }
 
+    @XmlElement
     public void setCK(int CK) {
         this.CK = CK;
     }
@@ -76,6 +86,7 @@ public class Account {
         return accountCBRBIC;
     }
 
+    @XmlElement
     public void setAccountCBRBIC(String accountCBRBIC) {
         this.accountCBRBIC = accountCBRBIC;
     }
@@ -84,6 +95,7 @@ public class Account {
         return dateInCreated;
     }
 
+    @XmlElement
     public void setDateInCreated(LocalDate dateInCreated) {
         this.dateInCreated = dateInCreated;
     }
@@ -92,6 +104,7 @@ public class Account {
         return accountStatus;
     }
 
+    @XmlElement
     public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
     }
@@ -100,6 +113,7 @@ public class Account {
         return bicDirectoryEntries;
     }
 
+    @XmlElement
     public void setBicDirectoryEntries(BicDirectoryEntry bicDirectoryEntries) {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }

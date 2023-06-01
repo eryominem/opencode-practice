@@ -1,10 +1,15 @@
 package open.code.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDate;
 
 @Entity
+@XmlRootElement(name = "participantinfo")
+@XmlType(propOrder = {"NameP", "CntrCd", "Rgn", "Ind", "Tnp", "Nnp", "Adr", "DateIn", "PtType", "Srvcs", "XchType", "UID", "ParticipantStatus"})
 public class ParticipantInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +71,7 @@ public class ParticipantInfo {
         return id;
     }
 
+    @XmlTransient
     public void setId(long id) {
         this.id = id;
     }
@@ -74,6 +80,7 @@ public class ParticipantInfo {
         return nameP;
     }
 
+    @XmlTransient
     public void setNameP(String nameP) {
         this.nameP = nameP;
     }
@@ -82,6 +89,7 @@ public class ParticipantInfo {
         return cntrCd;
     }
 
+    @XmlTransient
     public void setCntrCd(String cntrCd) {
         this.cntrCd = cntrCd;
     }
@@ -90,6 +98,7 @@ public class ParticipantInfo {
         return rgn;
     }
 
+    @XmlTransient
     public void setRgn(String rgn) {
         this.rgn = rgn;
     }
@@ -98,6 +107,7 @@ public class ParticipantInfo {
         return ind;
     }
 
+    @XmlTransient
     public void setInd(String ind) {
         this.ind = ind;
     }
@@ -106,6 +116,7 @@ public class ParticipantInfo {
         return tnp;
     }
 
+    @XmlTransient
     public void setTnp(String tnp) {
         this.tnp = tnp;
     }
@@ -114,6 +125,7 @@ public class ParticipantInfo {
         return nnp;
     }
 
+    @XmlTransient
     public void setNnp(String nnp) {
         this.nnp = nnp;
     }
@@ -122,6 +134,7 @@ public class ParticipantInfo {
         return adr;
     }
 
+    @XmlTransient
     public void setAdr(String adr) {
         this.adr = adr;
     }
@@ -130,6 +143,7 @@ public class ParticipantInfo {
         return dateIn;
     }
 
+    @XmlTransient
     public void setDateIn(LocalDate dateIn) {
         this.dateIn = dateIn;
     }
@@ -138,6 +152,7 @@ public class ParticipantInfo {
         return ptType;
     }
 
+    @XmlTransient
     public void setPtType(String ptType) {
         this.ptType = ptType;
     }
@@ -146,6 +161,7 @@ public class ParticipantInfo {
         return srvcs;
     }
 
+    @XmlTransient
     public void setSrvcs(String srvcs) {
         this.srvcs = srvcs;
     }
@@ -154,6 +170,7 @@ public class ParticipantInfo {
         return xchType;
     }
 
+    @XmlTransient
     public void setXchType(String xchType) {
         this.xchType = xchType;
     }
@@ -162,6 +179,7 @@ public class ParticipantInfo {
         return UID;
     }
 
+    @XmlTransient
     public void setUID(String UID) {
         this.UID = UID;
     }
@@ -170,6 +188,7 @@ public class ParticipantInfo {
         return participantStatus;
     }
 
+    @XmlTransient
     public void setParticipantStatus(String participantStatus) {
         this.participantStatus = participantStatus;
     }
@@ -178,6 +197,7 @@ public class ParticipantInfo {
         return bicDirectoryEntry;
     }
 
+    @XmlTransient
     public void setBicDirectoryEntry(BicDirectoryEntry bicDirectoryEntry) {
         this.bicDirectoryEntry = bicDirectoryEntry;
     }

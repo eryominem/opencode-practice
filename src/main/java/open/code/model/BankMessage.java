@@ -1,12 +1,17 @@
 package open.code.model;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@XmlRootElement(name = "ed807")
+@XmlType(propOrder = {"EDNo", "EDDate", "EDAuthor", "CreationReason", "CreationDateTime", "InfoTypeCode", "BusinessDay", "DirectoryVersion"})
 public class BankMessage {
 
     @Id
@@ -29,8 +34,7 @@ public class BankMessage {
 
     private int directoryVersion;
 
-    @OneToMany
-    @JoinColumn(name = "BicDirectoryEntry_id")
+    @OneToMany(mappedBy = "BicDirectoryEntry_id")
     private Set<BicDirectoryEntry> bicDirectoryEntries;
 
     public BankMessage() {
@@ -61,6 +65,7 @@ public class BankMessage {
         return eDNo;
     }
 
+    @XmlTransient
     public void setEDNo(String eDNo) {
         this.eDNo = eDNo;
     }
@@ -69,6 +74,7 @@ public class BankMessage {
         return eDDate;
     }
 
+    @XmlTransient
     public void setEDDate(LocalDate eDDate) {
         this.eDDate = eDDate;
     }
@@ -77,6 +83,7 @@ public class BankMessage {
         return eDAuthor;
     }
 
+    @XmlTransient
     public void setEDAuthor(String eDAuthor) {
         this.eDAuthor = eDAuthor;
     }
@@ -85,6 +92,7 @@ public class BankMessage {
         return creationReason;
     }
 
+    @XmlTransient
     public void setCreationReason(String creationReason) {
         this.creationReason = creationReason;
     }
@@ -93,6 +101,7 @@ public class BankMessage {
         return creationDateTime;
     }
 
+    @XmlTransient
     public void setCreationDateTime(LocalDateTime creationDateTime) {
         this.creationDateTime = creationDateTime;
     }
@@ -101,6 +110,7 @@ public class BankMessage {
         return infoTypeCode;
     }
 
+    @XmlTransient
     public void setInfoTypeCode(String infoTypeCode) {
         this.infoTypeCode = infoTypeCode;
     }
@@ -109,6 +119,7 @@ public class BankMessage {
         return businessDay;
     }
 
+    @XmlTransient
     public void setBusinessDay(LocalDate businessDay) {
         this.businessDay = businessDay;
     }
@@ -117,6 +128,7 @@ public class BankMessage {
         return directoryVersion;
     }
 
+    @XmlTransient
     public void setDirectoryVersion(int directoryVersion) {
         this.directoryVersion = directoryVersion;
     }
@@ -125,6 +137,7 @@ public class BankMessage {
         return bicDirectoryEntries;
     }
 
+    @XmlTransient
     public void setBicDirectoryEntries(Set<BicDirectoryEntry> bicDirectoryEntries) {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }

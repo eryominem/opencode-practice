@@ -57,27 +57,27 @@ public class BankMessage {
         this.id = id;
     }
 
-    public String geteDNo() {
+    public String getEDNo() {
         return eDNo;
     }
 
-    public void seteDNo(String eDNo) {
+    public void setEDNo(String eDNo) {
         this.eDNo = eDNo;
     }
 
-    public LocalDate geteDDate() {
+    public LocalDate getEDDate() {
         return eDDate;
     }
 
-    public void seteDDate(LocalDate eDDate) {
+    public void setEDDate(LocalDate eDDate) {
         this.eDDate = eDDate;
     }
 
-    public String geteDAuthor() {
+    public String getEDAuthor() {
         return eDAuthor;
     }
 
-    public void seteDAuthor(String eDAuthor) {
+    public void setEDAuthor(String eDAuthor) {
         this.eDAuthor = eDAuthor;
     }
 

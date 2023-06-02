@@ -2,85 +2,40 @@ package open.code.model;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 import java.util.Set;
 
 @Entity
-@XmlRootElement(name = "bicdirectoryentry")
-@XmlType(propOrder = {"BIC", "participantinfo", "accounts"})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@XmlRootElement(name = "BICDirectoryEntry")
 public class BicDirectoryEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long bicDirectoryEntryId;
+    private Long id;
 
+    @XmlAttribute(name = "BIC")
     private String BIC;
 
     @OneToOne
-    @JoinColumn(name = "ParticipantInfo_id")
+    @JoinColumn(name = "participantInfo_id")
+    @XmlElement(name = "ParticipantInfo")
     private ParticipantInfo participantInfo;
 
-    @OneToMany(mappedBy = "accountId")
+    @XmlElementWrapper(name = "Accounts")
+    @XmlElement(name = "Account")
+    @OneToMany(mappedBy = "bicDirectoryEntry")
     private Set<Account> account;
 
     @ManyToOne
-    @JoinColumn(name = "BankMessage_id")
+    @JoinColumn(name = "bankMessage_id")
     private BankMessage bankMessage;
-
-    public BicDirectoryEntry() {
-    }
-
-    public BicDirectoryEntry(String BIC, ParticipantInfo participantInfo, Set<Account> account, BankMessage bankMessage) {
-        this.BIC = BIC;
-        this.participantInfo = participantInfo;
-        this.account = account;
-        this.bankMessage = bankMessage;
-    }
-
-    public long getId() {
-        return bicDirectoryEntryId;
-    }
-
-
-    public void setId(long bicDirectoryEntryId) {
-        this.bicDirectoryEntryId = bicDirectoryEntryId;
-    }
-
-    public String getBIC() {
-        return BIC;
-    }
-
-    @XmlElement
-    public void setBIC(String BIC) {
-        this.BIC = BIC;
-    }
-
-    public ParticipantInfo getParticipantInfo() {
-        return participantInfo;
-    }
-
-    @XmlElement
-    public void setParticipantInfo(ParticipantInfo participantInfo) {
-        this.participantInfo = participantInfo;
-    }
-
-    public Set<Account> getAccount() {
-        return account;
-    }
-
-    @XmlElement
-    public void setAccount(Set<Account> account) {
-        this.account = account;
-    }
-
-    public BankMessage getBankMessage() {
-        return bankMessage;
-    }
-
-    @XmlElement
-    public void setBankMessage(BankMessage bankMessage) {
-        this.bankMessage = bankMessage;
-    }
 }

@@ -62,7 +62,7 @@ public class ParticipantInfo {
     @XmlAttribute(name = "ParticipantStatus")
     private String participantStatus;
 
-    @OneToOne
+   /* @OneToOne
     @JoinColumn(name = "bicDirectoryEntry_id")
-    private BicDirectoryEntry bicDirectoryEntry;
+    private BicDirectoryEntry bicDirectoryEntry;*/
 }

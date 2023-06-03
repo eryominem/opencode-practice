@@ -31,7 +31,6 @@ public class Converter {
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(reader);
             bankMessageRepository.save(bankMessage);
         } catch (JAXBException | FileNotFoundException e) {
-            System.out.println("hui");
             e.printStackTrace();
         }
     }

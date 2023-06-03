@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,10 +18,14 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ED807")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BankMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @XmlAttribute(name = "xmlns")
+    private String xmlns;
 
     @XmlAttribute(name = "EDNo")
     private String eDNo;

@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "Accounts")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

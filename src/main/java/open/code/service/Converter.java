@@ -1,7 +1,10 @@
 package open.code.service;
 
 import open.code.model.BankMessage;
+import open.code.repository.AccountRepository;
 import open.code.repository.BankMessageRepository;
+import open.code.repository.BicDirectoryEntryRepository;
+import open.code.repository.ParticipantInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -18,9 +21,18 @@ public class Converter {
 
     private final BankMessageRepository bankMessageRepository;
 
+    private final AccountRepository accountRepository;
+
+    private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
+
+    private final ParticipantInfoRepository participantInfoRepository;
+
     @Autowired
-    public Converter(BankMessageRepository bankMessageRepository) {
+    public Converter(BankMessageRepository bankMessageRepository, AccountRepository accountRepository, BicDirectoryEntryRepository bicDirectoryEntryRepository, ParticipantInfoRepository participantInfoRepository) {
         this.bankMessageRepository = bankMessageRepository;
+        this.accountRepository = accountRepository;
+        this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
+        this.participantInfoRepository = participantInfoRepository;
     }
 
     public void parseXmlAndSaveToDatabase(MultipartFile multipartFile) {

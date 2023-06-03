@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "ParticipantInfo")
+@XmlRootElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ParticipantInfo {
     @Id
@@ -65,7 +65,7 @@ public class ParticipantInfo {
     @XmlAttribute(name = "ParticipantStatus")
     private String participantStatus;
 
-   /* @OneToOne
+    @OneToOne
     @JoinColumn(name = "bicDirectoryEntry_id")
-    private BicDirectoryEntry bicDirectoryEntry;*/
+    private BicDirectoryEntry bicDirectoryEntry;
 }

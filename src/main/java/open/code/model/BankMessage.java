@@ -13,8 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Entity
+
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
@@ -53,6 +54,7 @@ public class BankMessage {
     @XmlAttribute(name = "DirectoryVersion")
     private int directoryVersion;
 
+    @XmlElementWrapper(name = "BICDirectoryEntry")
     @OneToMany(mappedBy = "bankMessage")
     private Set<BicDirectoryEntry> bicDirectoryEntries;
 }

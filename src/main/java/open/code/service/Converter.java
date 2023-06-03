@@ -1,6 +1,9 @@
 package open.code.service;
 
+import open.code.model.Account;
 import open.code.model.BankMessage;
+import open.code.model.BicDirectoryEntry;
+import open.code.model.ParticipantInfo;
 import open.code.repository.AccountRepository;
 import open.code.repository.BankMessageRepository;
 import open.code.repository.BicDirectoryEntryRepository;
@@ -42,14 +45,13 @@ public class Converter {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String body = br.lines().collect(Collectors.joining());
             StringReader reader = new StringReader(body);
-            JAXBContext context = JAXBContext.newInstance(BankMessage.class);
+            JAXBContext context = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(reader);
+            System.out.println(bankMessage);
             bankMessageRepository.save(bankMessage);
-        } catch (JAXBException | FileNotFoundException e) {
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

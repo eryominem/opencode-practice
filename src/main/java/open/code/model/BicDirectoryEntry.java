@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "BICDirectoryEntry")
+@XmlRootElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BicDirectoryEntry {
     @Id

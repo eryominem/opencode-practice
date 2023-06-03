@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "Accounts")
+@XmlRootElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Account {
     @Id

@@ -4,6 +4,8 @@ import open.code.model.BankMessage;
 import open.code.repository.BankMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,9 +23,11 @@ public class Converter {
         this.bankMessageRepository = bankMessageRepository;
     }
 
-    public void parseXmlAndSaveToDatabase(File xmlFile) {
+    public void parseXmlAndSaveToDatabase(MultipartFile multipartFile) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(xmlFile));
+            File file = File.createTempFile("temp", multipartFile.getOriginalFilename());
+            FileCopyUtils.copy(multipartFile.getBytes(), file);
+            BufferedReader br = new BufferedReader(new FileReader(file));
             String body = br.lines().collect(Collectors.joining());
             StringReader reader = new StringReader(body);
             JAXBContext context = JAXBContext.newInstance(BankMessage.class);
@@ -32,6 +36,8 @@ public class Converter {
             bankMessageRepository.save(bankMessage);
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

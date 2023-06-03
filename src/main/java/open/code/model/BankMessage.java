@@ -17,15 +17,14 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "ED807")
+@XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
+@XmlType(propOrder = {"eDNo", "eDDate", "eDAuthor", "creationReason", "creationDateTime", "infoTypeCode", "businessDay", "directoryVersion", "bicDirectoryEntries"})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BankMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
-
-    @XmlAttribute(name = "xmlns")
-    private String xmlns;
 
     @XmlAttribute(name = "EDNo")
     private String eDNo;

@@ -20,7 +20,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,21 +65,22 @@ public class Converter {
             if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {
                     entry.setBankMessage(bankMessage);
-                    bicDirectoryEntryRepository.save(entry);
+                   // bicDirectoryEntryRepository.save(entry);
                     ParticipantInfo participantInfo = entry.getParticipantInfo();
                     if (participantInfo != null) {
                         participantInfo.setBicDirectoryEntry(entry);
-                        participantInfoRepository.save(participantInfo);
+                       // participantInfoRepository.save(participantInfo);
                     }
                     List<Account> accounts = entry.getAccounts();
                     if (!CollectionUtils.isEmpty(accounts)) {
                         for (Account account : accounts) {
                             account.setBicDirectoryEntry(entry);
-                            accountRepository.save(account);
+                            //accountRepository.save(account);
                         }
                     }
                 }
             }
         }
+        bankMessageRepository.save(bankMessage);
     }
 }

@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
-@XmlType(propOrder = {"eDNo", "eDDate", "eDAuthor", "creationReason", "creationDateTime", "infoTypeCode", "businessDay", "directoryVersion", "bicDirectoryEntries"})
+//@XmlType(propOrder = {"eDNo", "eDDate", "eDAuthor", "creationReason", "creationDateTime", "infoTypeCode", "businessDay", "directoryVersion", "bicDirectoryEntries"})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BankMessage {
     @Id
@@ -54,7 +55,7 @@ public class BankMessage {
     @XmlAttribute(name = "DirectoryVersion")
     private int directoryVersion;
 
-    @XmlElementWrapper(name = "BICDirectoryEntry")
-    @OneToMany(mappedBy = "bankMessage")
-    private Set<BicDirectoryEntry> bicDirectoryEntries;
+    @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
+    private List<BicDirectoryEntry> bicDirectoryEntries;
 }

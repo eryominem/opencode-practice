@@ -1,5 +1,6 @@
 package open.code.service;
 
+import jakarta.transaction.Transactional;
 import open.code.model.Account;
 import open.code.model.BankMessage;
 import open.code.model.BicDirectoryEntry;
@@ -10,6 +11,7 @@ import open.code.repository.BicDirectoryEntryRepository;
 import open.code.repository.ParticipantInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +19,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,10 +52,36 @@ public class Converter {
             JAXBContext context = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(reader);
-            System.out.println(bankMessage);
             bankMessageRepository.save(bankMessage);
+            saveEntitiesFromXml(bankMessage);
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void saveEntitiesFromXml(BankMessage bankMessage) {
+        if (bankMessage != null) {
+            List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
+            if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
+                for (BicDirectoryEntry entry : bicDirectoryEntries) {
+                    entry.setBankMessage(bankMessage);
+                    bicDirectoryEntryRepository.save(entry);
+
+                    ParticipantInfo participantInfo = entry.getParticipantInfo();
+                    if (participantInfo != null) {
+                        participantInfo.setBicDirectoryEntry(entry);
+                        participantInfoRepository.save(participantInfo);
+                    }
+                    List<Account> accounts = entry.getAccounts();
+                    if (!CollectionUtils.isEmpty(accounts)) {
+                        for (Account account : accounts) {
+                            account.setBicDirectoryEntry(entry);
+                            accountRepository.save(account);
+                        }
+                    }
+                }
+            }
         }
     }
 }

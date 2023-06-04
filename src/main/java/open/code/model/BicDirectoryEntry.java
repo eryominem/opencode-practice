@@ -1,13 +1,13 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,17 +24,16 @@ public class BicDirectoryEntry {
     @XmlAttribute(name = "BIC")
     private String BIC;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "participantInfo_id")
-    @XmlElement(name = "ParticipantInfo")
+    @XmlElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
     private ParticipantInfo participantInfo;
 
-    @XmlElementWrapper(name = "Accounts")
-    @XmlElement(name = "Account")
-    @OneToMany(mappedBy = "bicDirectoryEntry")
-    private Set<Account> account;
+    @XmlElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.ALL)
+    private List<Account> accounts;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bankMessage_id")
     private BankMessage bankMessage;
 }

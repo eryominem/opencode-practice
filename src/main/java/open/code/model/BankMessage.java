@@ -1,9 +1,7 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
 
@@ -15,12 +13,12 @@ import java.util.List;
 import java.util.Set;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
-//@XmlType(propOrder = {"eDNo", "eDDate", "eDAuthor", "creationReason", "creationDateTime", "infoTypeCode", "businessDay", "directoryVersion", "bicDirectoryEntries"})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BankMessage {
     @Id

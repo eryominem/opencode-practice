@@ -49,7 +49,7 @@ public class Converter {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String body = br.lines().collect(Collectors.joining());
             StringReader reader = new StringReader(body);
-            JAXBContext context = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
+            JAXBContext context = JAXBContext.newInstance(BankMessage.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(reader);
             bankMessageRepository.save(bankMessage);
@@ -67,7 +67,6 @@ public class Converter {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {
                     entry.setBankMessage(bankMessage);
                     bicDirectoryEntryRepository.save(entry);
-
                     ParticipantInfo participantInfo = entry.getParticipantInfo();
                     if (participantInfo != null) {
                         participantInfo.setBicDirectoryEntry(entry);

@@ -1,9 +1,7 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,7 +12,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")

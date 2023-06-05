@@ -47,7 +47,6 @@ public class Converter {
             JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file);
-            bankMessageRepository.save(bankMessage);
             saveEntitiesFromXml(bankMessage);
         } catch (JAXBException | IOException e) {
             e.printStackTrace();

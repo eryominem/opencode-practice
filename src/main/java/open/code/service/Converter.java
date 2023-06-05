@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 public class Converter {
@@ -43,14 +43,10 @@ public class Converter {
 
     public void parseXmlAndSaveToDatabase(MultipartFile multipartFile) {
         try {
-            File file = File.createTempFile("temp", multipartFile.getOriginalFilename());
-            FileCopyUtils.copy(multipartFile.getBytes(), file);
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String body = br.lines().collect(Collectors.joining());
-            StringReader reader = new StringReader(body);
-            JAXBContext context = JAXBContext.newInstance(BankMessage.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(reader);
+            File file = convertMultipartFileToFile(multipartFile);
+            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file);
             bankMessageRepository.save(bankMessage);
             saveEntitiesFromXml(bankMessage);
         } catch (JAXBException | IOException e) {
@@ -65,22 +61,25 @@ public class Converter {
             if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {
                     entry.setBankMessage(bankMessage);
-                   // bicDirectoryEntryRepository.save(entry);
                     ParticipantInfo participantInfo = entry.getParticipantInfo();
                     if (participantInfo != null) {
                         participantInfo.setBicDirectoryEntry(entry);
-                       // participantInfoRepository.save(participantInfo);
                     }
                     List<Account> accounts = entry.getAccounts();
                     if (!CollectionUtils.isEmpty(accounts)) {
                         for (Account account : accounts) {
                             account.setBicDirectoryEntry(entry);
-                            //accountRepository.save(account);
                         }
                     }
                 }
             }
+            bankMessageRepository.save(bankMessage);
         }
-        bankMessageRepository.save(bankMessage);
+    }
+
+    private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        FileCopyUtils.copy(multipartFile.getBytes(), file);
+        return file;
     }
 }

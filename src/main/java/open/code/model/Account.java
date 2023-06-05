@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,10 +37,18 @@ public class Account {
     @XmlAttribute(name = "DateIn")
     private LocalDate dateIn;
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlAttribute(name = "DateOut")
+    private LocalDate dateOut;
+
     @XmlAttribute(name = "AccountStatus")
     private String accountStatus;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bicDirectoryEntry_id")
     private BicDirectoryEntry bicDirectoryEntry;
+
+    @XmlElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<AccRstrList> accRstrLists;
 }

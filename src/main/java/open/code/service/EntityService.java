@@ -1,15 +1,14 @@
 package open.code.service;
 
 import jakarta.transaction.Transactional;
-import open.code.model.Account;
-import open.code.model.BankMessage;
-import open.code.model.BicDirectoryEntry;
-import open.code.model.ParticipantInfo;
+import open.code.model.*;
 import open.code.repository.AccountRepository;
 import open.code.repository.BankMessageRepository;
 import open.code.repository.BicDirectoryEntryRepository;
 import open.code.repository.ParticipantInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
@@ -23,33 +22,38 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class Converter {
-
+public class EntityService {
     private final BankMessageRepository bankMessageRepository;
-
+    private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
+    private final ParticipantInfoRepository participantInfoRepository;
     private final AccountRepository accountRepository;
 
-    private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
-
-    private final ParticipantInfoRepository participantInfoRepository;
-
     @Autowired
-    public Converter(BankMessageRepository bankMessageRepository, AccountRepository accountRepository, BicDirectoryEntryRepository bicDirectoryEntryRepository, ParticipantInfoRepository participantInfoRepository) {
+    public EntityService(BankMessageRepository bankMessageRepository,
+                         BicDirectoryEntryRepository bicDirectoryEntryRepository,
+                         ParticipantInfoRepository participantInfoRepository,
+                         AccountRepository accountRepository) {
         this.bankMessageRepository = bankMessageRepository;
-        this.accountRepository = accountRepository;
         this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
         this.participantInfoRepository = participantInfoRepository;
+        this.accountRepository = accountRepository;
     }
 
-    public void parseXmlAndSaveToDatabase(MultipartFile multipartFile) {
+    @Transactional
+    public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No file uploaded");
+        }
         try {
-            File file = convertMultipartFileToFile(multipartFile);
-            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
+            File file2 = convertMultipartFileToFile(file);
+            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file);
+            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file2);
             saveEntitiesFromXml(bankMessage);
+            return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the uploaded file");
         }
     }
 
@@ -60,14 +64,30 @@ public class Converter {
             if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {
                     entry.setBankMessage(bankMessage);
+                    if (entry.getSwbics() != null) {
+                        List<SWBICS> swbicsList = entry.getSwbics();
+                        for (SWBICS swbics : swbicsList) {
+                            swbics.setBicDirectoryEntry(entry);
+                        }
+                    }
                     ParticipantInfo participantInfo = entry.getParticipantInfo();
                     if (participantInfo != null) {
+                        if (participantInfo.getRstrList() != null) {
+                            RstrList rstrList = participantInfo.getRstrList();
+                            rstrList.setParticipantInfo(participantInfo);
+                        }
                         participantInfo.setBicDirectoryEntry(entry);
                     }
                     List<Account> accounts = entry.getAccounts();
                     if (!CollectionUtils.isEmpty(accounts)) {
                         for (Account account : accounts) {
                             account.setBicDirectoryEntry(entry);
+                            if (account.getAccRstrLists() != null) {
+                                List<AccRstrList> accRstrList = account.getAccRstrLists();
+                                for (AccRstrList accRstrLists : accRstrList) {
+                                    accRstrLists.setAccount(account);
+                                }
+                            }
                         }
                     }
                 }

@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -20,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BankMessage {
+public class    BankMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient
@@ -35,6 +34,9 @@ public class BankMessage {
 
     @XmlAttribute(name = "EDAuthor")
     private String eDAuthor;
+
+    @XmlAttribute(name = "EDReceiver")
+    private String eDReceiver;
 
     @XmlAttribute(name = "CreationReason")
     private String creationReason;

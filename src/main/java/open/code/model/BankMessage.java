@@ -1,24 +1,23 @@
 package open.code.model;
 
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "ED807")
+@XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BankMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +50,7 @@ public class BankMessage {
     @XmlAttribute(name = "DirectoryVersion")
     private int directoryVersion;
 
-    @OneToMany(mappedBy = "bankMessage")
-    private Set<BicDirectoryEntry> bicDirectoryEntries;
+    @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
+    private List<BicDirectoryEntry> bicDirectoryEntries;
 }

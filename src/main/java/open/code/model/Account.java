@@ -1,22 +1,22 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
+import java.util.List;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,11 @@ public class Account {
     @XmlAttribute(name = "AccountStatus")
     private String accountStatus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "bicDirectoryEntry_id")
     private BicDirectoryEntry bicDirectoryEntry;
+
+    @XmlElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<AccRstrList> accRstrLists;
 }

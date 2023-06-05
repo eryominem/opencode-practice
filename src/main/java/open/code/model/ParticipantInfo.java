@@ -1,18 +1,16 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
@@ -24,6 +22,12 @@ public class ParticipantInfo {
 
     @XmlAttribute(name = "NameP")
     private String nameP;
+
+    @XmlAttribute(name = "EnglName")
+    private String englName;
+
+    @XmlAttribute(name = "RegN")
+    private String regN;
 
     @XmlAttribute(name = "CntrCd")
     private String cntrCd;
@@ -43,9 +47,16 @@ public class ParticipantInfo {
     @XmlAttribute(name = "Adr")
     private String adr;
 
+    @XmlAttribute(name = "PrntBIC")
+    private String prntBIC;
+
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     @XmlAttribute(name = "DateIn")
     private LocalDate dateIn;
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlAttribute(name = "DateOut")
+    private LocalDate dateOut;
 
     @XmlAttribute(name = "PtType")
     private String ptType;
@@ -61,6 +72,11 @@ public class ParticipantInfo {
 
     @XmlAttribute(name = "ParticipantStatus")
     private String participantStatus;
+
+    @XmlElement(name = "RstrList", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rstrList_id")
+    private RstrList rstrList;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bicDirectoryEntry_id")

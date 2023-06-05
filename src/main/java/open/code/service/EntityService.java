@@ -1,10 +1,7 @@
 package open.code.service;
 
 import jakarta.transaction.Transactional;
-import open.code.model.Account;
-import open.code.model.BankMessage;
-import open.code.model.BicDirectoryEntry;
-import open.code.model.ParticipantInfo;
+import open.code.model.*;
 import open.code.repository.AccountRepository;
 import open.code.repository.BankMessageRepository;
 import open.code.repository.BicDirectoryEntryRepository;
@@ -20,15 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class EntityService {
-    private static final String FILE_PATH = "test.xml";
     private final BankMessageRepository bankMessageRepository;
     private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
     private final ParticipantInfoRepository participantInfoRepository;
@@ -50,14 +44,11 @@ public class EntityService {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
-
         try {
             File file2 = convertMultipartFileToFile(file);
-
-            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class, BicDirectoryEntry.class, Account.class, ParticipantInfo.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file2);
-
             saveEntitiesFromXml(bankMessage);
             return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {
@@ -69,21 +60,34 @@ public class EntityService {
     @Transactional
     public void saveEntitiesFromXml(BankMessage bankMessage) {
         if (bankMessage != null) {
-            System.out.println(bankMessage.toString());
             List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
             if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {
                     entry.setBankMessage(bankMessage);
-
+                    if (entry.getSwbics() != null) {
+                        List<SWBICS> swbicsList = entry.getSwbics();
+                        for (SWBICS swbics : swbicsList) {
+                            swbics.setBicDirectoryEntry(entry);
+                        }
+                    }
                     ParticipantInfo participantInfo = entry.getParticipantInfo();
                     if (participantInfo != null) {
+                        if (participantInfo.getRstrList() != null) {
+                            RstrList rstrList = participantInfo.getRstrList();
+                            rstrList.setParticipantInfo(participantInfo);
+                        }
                         participantInfo.setBicDirectoryEntry(entry);
                     }
-
                     List<Account> accounts = entry.getAccounts();
                     if (!CollectionUtils.isEmpty(accounts)) {
                         for (Account account : accounts) {
                             account.setBicDirectoryEntry(entry);
+                            if (account.getAccRstrLists() != null) {
+                                List<AccRstrList> accRstrList = account.getAccRstrLists();
+                                for (AccRstrList accRstrLists : accRstrList) {
+                                    accRstrLists.setAccount(account);
+                                }
+                            }
                         }
                     }
                 }

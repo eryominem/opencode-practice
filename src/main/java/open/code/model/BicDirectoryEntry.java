@@ -1,14 +1,15 @@
 package open.code.model;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 import javax.xml.bind.annotation.*;
+
 import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
@@ -21,6 +22,9 @@ public class BicDirectoryEntry {
     @XmlAttribute(name = "BIC")
     private String BIC;
 
+    @XmlAttribute(name = "ChangeType")
+    private String changeType;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "participantInfo_id")
     @XmlElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
@@ -29,6 +33,10 @@ public class BicDirectoryEntry {
     @XmlElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
     @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.ALL)
     private List<Account> accounts;
+
+    @XmlElement(name = "SWBICS", namespace = "urn:cbr-ru:ed:v2.0")
+    @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.ALL)
+    private List<SWBICS> swbics;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bankMessage_id")

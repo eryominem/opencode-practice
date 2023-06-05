@@ -1,6 +1,5 @@
 package open.code.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
@@ -12,15 +11,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "ED807", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BankMessage {
+public class    BankMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
 
     @XmlAttribute(name = "EDNo")
@@ -32,6 +34,9 @@ public class BankMessage {
 
     @XmlAttribute(name = "EDAuthor")
     private String eDAuthor;
+
+    @XmlAttribute(name = "EDReceiver")
+    private String eDReceiver;
 
     @XmlAttribute(name = "CreationReason")
     private String creationReason;

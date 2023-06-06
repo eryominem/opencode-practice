@@ -1,5 +1,6 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,7 @@ public class BicDirectoryEntry {
     @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.ALL)
     private List<SWBICS> swbics;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bankMessage_id")
     private BankMessage bankMessage;

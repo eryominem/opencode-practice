@@ -1,14 +1,12 @@
 package open.code.controller;
 
 import open.code.dto.BankMessageDto;
-import open.code.model.BankMessage;
 import open.code.service.BankMessageService;
 import open.code.service.EntityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +34,7 @@ public class BankMessageController {
 
     @GetMapping
     public List<BankMessageDto> getAll() {
-        List<BankMessage> bankMessages = bankMessageService.getAllMessages();
-        List<BankMessageDto> bankMessageDtos = new ArrayList<>();
-        for (BankMessage bankMessage : bankMessages) {
-            bankMessageDtos.add(new BankMessageDto(bankMessage));
-        }
-        return bankMessageDtos;
+        return bankMessageService.getAllMessages();
     }
 
     /*@GetMapping("/{id}")

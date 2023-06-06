@@ -1,5 +1,6 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,8 @@ public class BankMessage {
     @XmlAttribute(name = "CreationDateTime")
     private LocalDateTime creationDateTime;
 
+    private LocalDate dateAdd = LocalDate.now();
+
     @XmlAttribute(name = "InfoTypeCode")
     private String infoTypeCode;
 
@@ -62,6 +65,7 @@ public class BankMessage {
     @XmlAttribute(name = "DirectoryVersion")
     private int directoryVersion;
 
+    @JsonIgnore
     @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
     @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
     private List<BicDirectoryEntry> bicDirectoryEntries;

@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -53,7 +55,11 @@ public class BankMessage {
     @XmlAttribute(name = "CreationDateTime")
     private LocalDateTime creationDateTime;
 
-    private LocalDate dateAdd = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @UpdateTimestamp
+    private LocalDate updatedAt;
 
     @XmlAttribute(name = "InfoTypeCode")
     private String infoTypeCode;

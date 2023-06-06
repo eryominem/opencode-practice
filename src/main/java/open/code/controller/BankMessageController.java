@@ -35,7 +35,7 @@ public class BankMessageController {
     @GetMapping
     public List<BankMessageDto> getAll() {
         return bankMessageService.getAllMessages();
-    }
+    } 
 
     /*@GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable("id") Long id) {

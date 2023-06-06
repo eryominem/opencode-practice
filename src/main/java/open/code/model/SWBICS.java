@@ -1,5 +1,6 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class SWBICS {
     @XmlAttribute(name = "DefaultSWBIC")
     private boolean defaultSWBIC;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bicDirectoryEntry_id")
     private BicDirectoryEntry bicDirectoryEntry;

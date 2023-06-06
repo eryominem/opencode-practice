@@ -36,12 +36,7 @@ public class BankMessageController {
 
     @GetMapping
     public List<BankMessageDto> getAll() {
-        List<BankMessage> bankMessages = bankMessageService.getAllMessages();
-        List<BankMessageDto> bankMessageDtos = new ArrayList<>();
-        for (BankMessage bankMessage : bankMessages) {
-            bankMessageDtos.add(new BankMessageDto(bankMessage));
-        }
-        return bankMessageDtos;
+        return bankMessageService.getAllMessages();
     }
 
     /*@GetMapping("/{id}")

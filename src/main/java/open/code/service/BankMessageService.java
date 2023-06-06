@@ -1,5 +1,6 @@
 package open.code.service;
 
+import open.code.dto.BankMessageDto;
 import open.code.model.BankMessage;
 import open.code.repository.AccountRepository;
 import open.code.repository.BankMessageRepository;
@@ -8,6 +9,7 @@ import open.code.repository.ParticipantInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +21,12 @@ public class BankMessageService {
         this.bankMessageRepository = bankMessageRepository;
     }
 
-    public List<BankMessage> getAllMessages() {
-        return bankMessageRepository.findAll();
+    public List<BankMessageDto> getAllMessages() {
+        List<BankMessage> bankMessages = bankMessageRepository.findAll();
+        List<BankMessageDto> bankMessageDtos = new ArrayList<>();
+        for (BankMessage bankMessage : bankMessages) {
+            bankMessageDtos.add(new BankMessageDto(bankMessage));
+        }
+        return bankMessageDtos;
     }
 }

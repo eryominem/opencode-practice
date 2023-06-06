@@ -1,5 +1,6 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +42,7 @@ public class Account {
     @XmlAttribute(name = "AccountStatus")
     private String accountStatus;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "bicDirectoryEntry_id")
     private BicDirectoryEntry bicDirectoryEntry;

@@ -1,5 +1,6 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
@@ -78,6 +79,7 @@ public class ParticipantInfo {
     @JoinColumn(name = "rstrList_id")
     private RstrList rstrList;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bicDirectoryEntry_id")
     private BicDirectoryEntry bicDirectoryEntry;

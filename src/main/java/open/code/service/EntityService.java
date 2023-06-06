@@ -40,15 +40,18 @@ public class EntityService {
     }
 
     @Transactional
-    public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file) {
+    public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file, String title) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
         try {
-            File file2 = convertMultipartFileToFile(file);
+            File xmlFile = convertMultipartFileToFile(file);
             JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(file2);
+            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(xmlFile);
+
+            bankMessage.setTitle(title);
+            bankMessage.setFileName(xmlFile.getName());
             saveEntitiesFromXml(bankMessage);
             return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {

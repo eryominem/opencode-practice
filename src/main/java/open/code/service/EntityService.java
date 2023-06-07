@@ -20,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class EntityService {
@@ -40,7 +41,7 @@ public class EntityService {
     }
 
     @Transactional
-    public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file, String title) {
+    public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file, Optional<String> title) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
@@ -50,7 +51,12 @@ public class EntityService {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(xmlFile);
 
-            bankMessage.setTitle(title);
+            if (title.isPresent()) {
+                bankMessage.setTitle(title.get());
+            } else {
+                bankMessage.setTitle(xmlFile.getName());
+            }
+
             bankMessage.setFileName(xmlFile.getName());
             saveEntitiesFromXml(bankMessage);
             return ResponseEntity.ok("File uploaded and entities saved successfully");

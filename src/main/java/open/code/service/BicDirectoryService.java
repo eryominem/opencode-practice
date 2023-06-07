@@ -6,7 +6,6 @@ import open.code.repository.BicDirectoryEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +22,10 @@ public class BicDirectoryService {
     /**
      * Return all payers from a specific file
      */
-    public List<PayerDto> getAllPayersFromBicDirectory(Long id) {
+    public List<PayerDto> transformBicDirectoriesToPayers(Long id) {
         List<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAllByBankMessageId(id);
         return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
                 .collect(Collectors.toList());
     }
+
 }

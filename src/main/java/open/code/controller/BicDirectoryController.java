@@ -3,10 +3,7 @@ package open.code.controller;
 import open.code.dto.PayerDto;
 import open.code.service.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +17,15 @@ public class BicDirectoryController {
         this.bicDirectoryService = bicDirectoryService;
     }
 
-    @GetMapping
-    public List<PayerDto> getAll(@RequestParam("id") Long id) {
-        return bicDirectoryService.getAllPayersFromBicDirectory(id);
+    @PostMapping
+    public void createPayer(@RequestParam("msgId") Long id,
+                            @RequestBody PayerDto payerDto) {
+
     }
+
+    @GetMapping
+    public List<PayerDto> getPayers(@RequestParam("msgId") Long id) {
+        return bicDirectoryService.transformBicDirectoriesToPayers(id);
+    }
+
 }

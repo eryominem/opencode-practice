@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PayerDto {
     private Long payerId;
+    private Long msgId;
     private String BIC;
     private String changeType;
     private String nameP;
@@ -35,6 +36,7 @@ public class PayerDto {
 
     public PayerDto(BicDirectoryEntry bicDirectoryEntry, ParticipantInfo participantInfo) {
         this.payerId = bicDirectoryEntry.getId();
+        this.msgId = bicDirectoryEntry.getBankMessage().getId();
         this.BIC = bicDirectoryEntry.getBIC();
         this.changeType = bicDirectoryEntry.getChangeType();
         this.nameP = participantInfo.getNameP();

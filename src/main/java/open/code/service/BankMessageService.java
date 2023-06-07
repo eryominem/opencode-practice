@@ -18,7 +18,7 @@ public class BankMessageService {
         this.bankMessageRepository = bankMessageRepository;
     }
 
-    public List<BankMessageDto> getAllMessages() {
+    public List<BankMessageDto> transformBankMessageToDto() {
         List<BankMessage> bankMessages = bankMessageRepository.findAll();
         return bankMessages.stream().map(BankMessageDto::new).collect(Collectors.toList());
     }

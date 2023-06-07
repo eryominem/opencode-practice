@@ -23,18 +23,14 @@ public class BankMessageController {
     }
 
     @PostMapping
-    public ResponseEntity<?> upload(@RequestPart("file") MultipartFile file,
+    public ResponseEntity<?> uploadMessage(@RequestPart("file") MultipartFile file,
                                     @RequestParam("title") Optional<String> title) {
-        if (title.isPresent()) {
-            return entityService.saveEntitiesFromXml(file, title.get());
-        } else {
-            return entityService.saveEntitiesFromXml(file, file.getOriginalFilename());
-        }
+        return entityService.saveEntitiesFromXml(file, title);
     }
 
     @GetMapping
-    public List<BankMessageDto> getAll() {
-        return bankMessageService.getAllMessages();
+    public List<BankMessageDto> getMessages() {
+        return bankMessageService.transformBankMessageToDto();
     } 
 
     /*@GetMapping("/{id}")

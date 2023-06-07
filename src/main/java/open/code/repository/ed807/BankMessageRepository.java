@@ -1,6 +1,6 @@
-package open.code.repository;
+package open.code.repository.ed807;
 
-import open.code.model.BankMessage;
+import open.code.model.Ed807.BankMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

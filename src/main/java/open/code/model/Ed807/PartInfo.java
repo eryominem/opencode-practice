@@ -1,4 +1,4 @@
-package open.code.model;
+package open.code.model.Ed807;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

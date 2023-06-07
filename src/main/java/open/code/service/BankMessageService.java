@@ -1,8 +1,8 @@
 package open.code.service;
 
 import open.code.dto.BankMessageDto;
-import open.code.model.BankMessage;
-import open.code.repository.BankMessageRepository;
+import open.code.model.Ed807.BankMessage;
+import open.code.repository.ed807.BankMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

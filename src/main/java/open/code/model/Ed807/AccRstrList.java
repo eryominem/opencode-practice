@@ -1,5 +1,6 @@
-package open.code.model;
+package open.code.model.Ed807;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,28 +16,29 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@XmlRootElement(name = "InitialED", namespace = "urn:cbr-ru:ed:v2.0")
+@AllArgsConstructor
+@NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InitialED {
+@XmlRootElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
+public class AccRstrList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @XmlAttribute(name = "EDNo")
-    private String eDNo;
+    @XmlAttribute(name = "AccRstr")
+    private String accRstr;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    @XmlAttribute(name = "EDDate")
-    private LocalDate eDDate;
+    @XmlAttribute(name = "AccRstrDate")
+    private LocalDate accRstrDate;
 
-    @XmlAttribute(name = "EDAuthor")
-    private String eDAuthor;
+    @XmlAttribute(name = "SuccessorBIC")
+    private String successorBIC;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bankMessage_id")
-    private BankMessage bankMessage;
+    @JoinColumn(name = "account_id")
+    private Account account;
 }

@@ -1,7 +1,7 @@
 package open.code.service;
 
-import open.code.model.Account;
-import open.code.repository.AccountRepository;
+import open.code.model.Ed807.Account;
+import open.code.repository.ed807.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

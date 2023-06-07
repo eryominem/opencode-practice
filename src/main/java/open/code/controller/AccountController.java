@@ -1,6 +1,6 @@
 package open.code.controller;
 
-import open.code.model.Account;
+import open.code.model.Ed807.Account;
 import open.code.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 

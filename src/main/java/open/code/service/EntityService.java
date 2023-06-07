@@ -1,11 +1,11 @@
 package open.code.service;
 
 import jakarta.transaction.Transactional;
-import open.code.model.*;
-import open.code.repository.AccountRepository;
-import open.code.repository.BankMessageRepository;
-import open.code.repository.BicDirectoryEntryRepository;
-import open.code.repository.ParticipantInfoRepository;
+import open.code.model.Ed807.*;
+import open.code.repository.ed807.AccountRepository;
+import open.code.repository.ed807.BankMessageRepository;
+import open.code.repository.ed807.BicDirectoryEntryRepository;
+import open.code.repository.ed807.ParticipantInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

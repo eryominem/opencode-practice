@@ -7,25 +7,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class DirectoryService {
     private final AccountStatusRepository accountStatusRepository;
-
     private final AccRstrRepository accRstrRepository;
-
     private final ChangeTypeRepository changeTypeRepository;
-
     private final CreationReasonRepository creationReasonRepository;
-
     private final InfoTypeCodeRepository infoTypeCodeRepository;
-
     private final ParticipantStatusRepository participantStatusRepository;
-
     private final PtTypeRepository ptTypeRepository;
-
     private final RegulationAccountTypeRepository regulationAccountTypeRepository;
-
     private final RstrRepository rstrRepository;
-
     private final SrvcsRepository srvcsRepository;
-
     private final XchTypeRepository xchTypeRepository;
 
     @Autowired
@@ -46,4 +36,6 @@ public class DirectoryService {
         this.srvcsRepository = srvcsRepository;
         this.xchTypeRepository = xchTypeRepository;
     }
+
+
 }

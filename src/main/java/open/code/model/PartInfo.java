@@ -1,9 +1,6 @@
 package open.code.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +27,8 @@ public class PartInfo {
     private String partQuantity;
 
     private String partAggregateID;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bankMessage_id")
+    private BankMessage bankMessage;
 }

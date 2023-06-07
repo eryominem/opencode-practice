@@ -69,6 +69,16 @@ public class EntityService {
     @Transactional
     public void saveEntitiesFromXml(BankMessage bankMessage) {
         if (bankMessage != null) {
+            if (bankMessage.getInitialEDS() != null) {
+                List<InitialED> initialEDS = bankMessage.getInitialEDS();
+                for (InitialED initialED : initialEDS)
+                    initialED.setBankMessage(bankMessage);
+            }
+            if (bankMessage.getPartInfos() != null) {
+                List<PartInfo> partInfos = bankMessage.getPartInfos();
+                for (PartInfo partInfo : partInfos)
+                    partInfo.setBankMessage(bankMessage);
+            }
             List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
             if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
                 for (BicDirectoryEntry entry : bicDirectoryEntries) {

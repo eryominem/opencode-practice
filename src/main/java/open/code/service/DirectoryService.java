@@ -36,6 +36,4 @@ public class DirectoryService {
         this.srvcsRepository = srvcsRepository;
         this.xchTypeRepository = xchTypeRepository;
     }
-
-
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import open.code.model.Ed807.BankMessage;
+import open.code.model.BankMessage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

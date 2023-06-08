@@ -1,14 +1,14 @@
 package open.code.controller;
 
 import open.code.dto.PayerDto;
-import open.code.service.BicDirectoryService;
+import open.code.service.bnk_msg.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/bics")
+@RequestMapping("/api/bics")
 public class BicDirectoryController {
     private final BicDirectoryService bicDirectoryService;
 

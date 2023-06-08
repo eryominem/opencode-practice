@@ -1,6 +1,6 @@
-package open.code.repository.ed807;
+package open.code.repository.bnk_msg;
 
-import open.code.model.Ed807.BicDirectoryEntry;
+import open.code.model.BicDirectoryEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

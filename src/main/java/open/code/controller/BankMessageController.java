@@ -1,8 +1,8 @@
 package open.code.controller;
 
 import open.code.dto.BankMessageDto;
-import open.code.service.BankMessageService;
-import open.code.service.EntityService;
+import open.code.service.bnk_msg.BankMessageService;
+import open.code.service.bnk_msg.EntityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/ed807")
+@RequestMapping("/api/ed807")
 public class BankMessageController {
     private final EntityService entityService;
     private final BankMessageService bankMessageService;

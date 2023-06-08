@@ -3,8 +3,8 @@ package open.code.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import open.code.model.Ed807.BicDirectoryEntry;
-import open.code.model.Ed807.ParticipantInfo;
+import open.code.model.BicDirectoryEntry;
+import open.code.model.ParticipantInfo;
 
 import java.time.LocalDate;
 

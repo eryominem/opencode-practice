@@ -1,8 +1,8 @@
-package open.code.service;
+package open.code.service.bnk_msg;
 
 import open.code.dto.PayerDto;
-import open.code.model.Ed807.BicDirectoryEntry;
-import open.code.repository.ed807.BicDirectoryEntryRepository;
+import open.code.model.BicDirectoryEntry;
+import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

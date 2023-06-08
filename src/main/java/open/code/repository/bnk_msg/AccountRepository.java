@@ -1,6 +1,6 @@
-package open.code.repository.ed807;
+package open.code.repository.bnk_msg;
 
-import open.code.model.Ed807.Account;
+import open.code.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

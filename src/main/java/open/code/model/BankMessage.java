@@ -1,4 +1,4 @@
-package open.code.model.Ed807;
+package open.code.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

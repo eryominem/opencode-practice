@@ -1,13 +1,13 @@
 package open.code.controller;
 
-import open.code.model.Ed807.Account;
-import open.code.service.AccountService;
+import open.code.model.Account;
+import open.code.service.bnk_msg.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/accounts")
 public class AccountController {
     private final AccountService accountService;
 

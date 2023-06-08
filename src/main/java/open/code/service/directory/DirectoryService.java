@@ -29,7 +29,6 @@ public class DirectoryService implements DirectoryContract {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
-
         var directory = Directory.builder()
                 .code(directoryDto.getCode())
                 .name(directoryDto.getName())

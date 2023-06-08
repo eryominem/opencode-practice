@@ -1,10 +1,12 @@
 package open.code.service.directory;
 
+import jakarta.transaction.Transactional;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.exception.DirectoryTypeException;
 import open.code.repository.DirectoryRepository;
 import open.code.util.DirectoryType;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DirectoryService implements DirectoryContract {
@@ -37,7 +40,7 @@ public class DirectoryService implements DirectoryContract {
                 .build();
         directoryRepository.save(directory);
 
-        return new ResponseEntity<Directory>(directory, HttpStatus.CREATED);
+        return new ResponseEntity<>(directory, HttpStatus.CREATED);
     }
 
     @Override
@@ -49,8 +52,23 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
-    public ResponseEntity<Directory> update(Long id) {
-        return null;
+    @Transactional
+    public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto) {
+        Optional<Directory> directoryOptional = directoryRepository.findById(id);
+        if (directoryOptional.isPresent()) {
+            Directory directory = directoryOptional.get();
+            if (directoryDto.getCode() != null)
+                directory.setCode(directoryDto.getCode());
+            if (directoryDto.getName() != null)
+                directory.setName(directoryDto.getName());
+            if (directoryDto.getValidityStart() != null)
+                directory.setValidityStart(directoryDto.getValidityStart());
+            if (directoryDto.getValidityEnd() != null)
+                directory.setValidityEnd(directoryDto.getValidityEnd());
+            directoryRepository.save(directory);
+            return new ResponseEntity<>(directory, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override

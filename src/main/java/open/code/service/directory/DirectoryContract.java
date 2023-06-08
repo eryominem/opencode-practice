@@ -11,7 +11,7 @@ public interface DirectoryContract {
 
     public List<Directory> getAll(String directoryType);
 
-    public ResponseEntity<Directory> update(Long id);
+    public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto);
 
     public ResponseEntity<Directory> delete(Long id);
 

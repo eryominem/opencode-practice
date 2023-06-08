@@ -29,4 +29,9 @@ public class DirectoryController {
     public List<Directory> getAll(@PathVariable("type") String directoryType) {
         return directoryService.getAll(directoryType);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Directory> update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
+        return directoryService.update(id, directoryDto);
+    }
 }

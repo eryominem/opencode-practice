@@ -6,15 +6,14 @@ import open.code.dto.DirectoryDto;
 import open.code.exception.DirectoryTypeException;
 import open.code.repository.DirectoryRepository;
 import open.code.util.DirectoryType;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DirectoryService implements DirectoryContract {
@@ -27,7 +26,7 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     public ResponseEntity<Directory> add(DirectoryDto directoryDto, String directoryType) {
-        if (!checkDirectoryType(directoryType)) {
+        if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
 
@@ -40,12 +39,12 @@ public class DirectoryService implements DirectoryContract {
                 .build();
         directoryRepository.save(directory);
 
-        return new ResponseEntity<>(directory, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(directory);
     }
 
     @Override
     public List<Directory> getAll(String directoryType) {
-        if (!checkDirectoryType(directoryType)) {
+        if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
         return directoryRepository.findAllByDirectoryType(directoryType);
@@ -54,29 +53,30 @@ public class DirectoryService implements DirectoryContract {
     @Override
     @Transactional
     public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto) {
-        Optional<Directory> directoryOptional = directoryRepository.findById(id);
-        if (directoryOptional.isPresent()) {
-            Directory directory = directoryOptional.get();
-            if (directoryDto.getCode() != null)
-                directory.setCode(directoryDto.getCode());
-            if (directoryDto.getName() != null)
-                directory.setName(directoryDto.getName());
-            if (directoryDto.getValidityStart() != null)
-                directory.setValidityStart(directoryDto.getValidityStart());
-            if (directoryDto.getValidityEnd() != null)
-                directory.setValidityEnd(directoryDto.getValidityEnd());
-            directoryRepository.save(directory);
-            return new ResponseEntity<>(directory, HttpStatus.OK);
-        } else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Directory directory = directoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        updateDirectory(directory, directoryDto);
+        directoryRepository.save(directory);
+        return ResponseEntity.status(HttpStatus.OK).body(directory);
     }
+
 
     @Override
     public ResponseEntity<Directory> delete(Long id) {
         return null;
     }
 
+    private void updateDirectory(Directory directory, DirectoryDto directoryDto) {
+        if (directoryDto.getCode() != null)
+            directory.setCode(directoryDto.getCode());
+        if (directoryDto.getName() != null)
+            directory.setName(directoryDto.getName());
+        if (directoryDto.getValidityStart() != null)
+            directory.setValidityStart(directoryDto.getValidityStart());
+        if (directoryDto.getValidityEnd() != null)
+            directory.setValidityEnd(directoryDto.getValidityEnd());
+    }
+
     private boolean checkDirectoryType(String directoryType) {
-        return Arrays.stream(DirectoryType.values()).anyMatch(x -> x.getVal().equals(directoryType));
+        return Arrays.stream(DirectoryType.values()).noneMatch(x -> x.getVal().equals(directoryType));
     }
 }

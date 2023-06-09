@@ -68,6 +68,65 @@ public class EntityService {
 
     @Transactional
     public void saveEntitiesFromXml(BankMessage bankMessage) {
+        if (bankMessage == null) {
+            return;
+        }
+
+        List<InitialED> initialEDS = bankMessage.getInitialEDS();
+        if (initialEDS != null) {
+            for (InitialED initialED : initialEDS) {
+                initialED.setBankMessage(bankMessage);
+            }
+        }
+
+        List<PartInfo> partInfos = bankMessage.getPartInfos();
+        if (partInfos != null) {
+            for (PartInfo partInfo : partInfos) {
+                partInfo.setBankMessage(bankMessage);
+            }
+        }
+
+        List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
+        if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
+            for (BicDirectoryEntry entry : bicDirectoryEntries) {
+                entry.setBankMessage(bankMessage);
+
+                List<SWBICS> swbicsList = entry.getSwbics();
+                if (swbicsList != null) {
+                    for (SWBICS swbics : swbicsList) {
+                        swbics.setBicDirectoryEntry(entry);
+                    }
+                }
+
+                ParticipantInfo participantInfo = entry.getParticipantInfo();
+                if (participantInfo != null) {
+                    RstrList rstrList = participantInfo.getRstrList();
+                    if (rstrList != null) {
+                        rstrList.setParticipantInfo(participantInfo);
+                    }
+                    participantInfo.setBicDirectoryEntry(entry);
+                }
+
+                List<Account> accounts = entry.getAccounts();
+                if (!CollectionUtils.isEmpty(accounts)) {
+                    for (Account account : accounts) {
+                        account.setBicDirectoryEntry(entry);
+
+                        List<AccRstrList> accRstrList = account.getAccRstrLists();
+                        if (accRstrList != null) {
+                            for (AccRstrList accRstrLists : accRstrList) {
+                                accRstrLists.setAccount(account);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        bankMessageRepository.save(bankMessage);
+    }
+
+    /*@Transactional
+    public void saveEntitiesFromXml(BankMessage bankMessage) {
         if (bankMessage != null) {
             if (bankMessage.getInitialEDS() != null) {
                 List<InitialED> initialEDS = bankMessage.getInitialEDS();
@@ -113,7 +172,7 @@ public class EntityService {
             }
             bankMessageRepository.save(bankMessage);
         }
-    }
+    }*/
 
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));

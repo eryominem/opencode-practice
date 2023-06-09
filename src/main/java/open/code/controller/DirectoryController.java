@@ -34,4 +34,9 @@ public class DirectoryController {
     public ResponseEntity<Directory> update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
         return directoryService.update(id, directoryDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return directoryService.delete(id);
+    }
 }

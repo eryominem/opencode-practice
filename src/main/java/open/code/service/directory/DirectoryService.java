@@ -1,6 +1,8 @@
 package open.code.service.directory;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import open.code.exception.DirectoryNotFoundException;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.exception.DirectoryTypeException;
@@ -46,13 +48,19 @@ public class DirectoryService implements DirectoryContract {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
-        return directoryRepository.findAllByDirectoryType(directoryType);
+        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType);
     }
 
     @Override
     @Transactional
     public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto) {
-        Directory directory = directoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Directory directory = directoryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (directory.isDeleted()) {
+            throw new DirectoryNotFoundException("Directory has been deleted");
+        }
+
         updateDirectory(directory, directoryDto);
         directoryRepository.save(directory);
         return ResponseEntity.status(HttpStatus.OK).body(directory);
@@ -60,8 +68,12 @@ public class DirectoryService implements DirectoryContract {
 
 
     @Override
-    public ResponseEntity<Directory> delete(Long id) {
-        return null;
+    public ResponseEntity<?> delete(Long id) {
+        directoryRepository.softDelete(id);
+        var deletedDirectory = directoryRepository.findById(id)
+                        .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
+        System.out.println(deletedDirectory.toString());
+        return ResponseEntity.status(HttpStatus.OK).body("Successful deletion");
     }
 
     private void updateDirectory(Directory directory, DirectoryDto directoryDto) {

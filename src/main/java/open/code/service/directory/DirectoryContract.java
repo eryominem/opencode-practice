@@ -13,6 +13,5 @@ public interface DirectoryContract {
 
     public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto);
 
-    public ResponseEntity<Directory> delete(Long id);
-
+    public ResponseEntity<?> delete(Long id);
 }

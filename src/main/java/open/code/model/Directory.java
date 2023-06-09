@@ -46,8 +46,12 @@ public class Directory {
 
     //private String updatedBy;
 
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //private String deletedBy;
+
+    @JsonIgnore
+    private boolean deleted;
 
 }

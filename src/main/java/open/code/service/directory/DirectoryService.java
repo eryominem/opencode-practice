@@ -1,6 +1,5 @@
 package open.code.service.directory;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import open.code.exception.DirectoryNotFoundException;
 import open.code.model.Directory;
@@ -71,7 +70,7 @@ public class DirectoryService implements DirectoryContract {
     public ResponseEntity<?> delete(Long id) {
         directoryRepository.softDelete(id);
         var deletedDirectory = directoryRepository.findById(id)
-                        .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
+                .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
         System.out.println(deletedDirectory.toString());
         return ResponseEntity.status(HttpStatus.OK).body("Successful deletion");
     }

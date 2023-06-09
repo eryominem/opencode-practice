@@ -24,17 +24,12 @@ public class BankMessageController {
 
     @PostMapping
     public ResponseEntity<?> uploadMessage(@RequestPart("file") MultipartFile file,
-                                    @RequestParam("title") Optional<String> title) {
+                                           @RequestParam("title") Optional<String> title) {
         return entityService.saveEntitiesFromXml(file, title);
     }
 
     @GetMapping
     public List<BankMessageDto> getMessages() {
         return bankMessageService.transformBankMessageToDto();
-    } 
-
-    /*@GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable("id") Long id) {
-
-    }*/
+    }
 }

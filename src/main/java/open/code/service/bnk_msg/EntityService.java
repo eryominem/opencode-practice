@@ -125,55 +125,6 @@ public class EntityService {
         bankMessageRepository.save(bankMessage);
     }
 
-    /*@Transactional
-    public void saveEntitiesFromXml(BankMessage bankMessage) {
-        if (bankMessage != null) {
-            if (bankMessage.getInitialEDS() != null) {
-                List<InitialED> initialEDS = bankMessage.getInitialEDS();
-                for (InitialED initialED : initialEDS)
-                    initialED.setBankMessage(bankMessage);
-            }
-            if (bankMessage.getPartInfos() != null) {
-                List<PartInfo> partInfos = bankMessage.getPartInfos();
-                for (PartInfo partInfo : partInfos)
-                    partInfo.setBankMessage(bankMessage);
-            }
-            List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
-            if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
-                for (BicDirectoryEntry entry : bicDirectoryEntries) {
-                    entry.setBankMessage(bankMessage);
-                    if (entry.getSwbics() != null) {
-                        List<SWBICS> swbicsList = entry.getSwbics();
-                        for (SWBICS swbics : swbicsList) {
-                            swbics.setBicDirectoryEntry(entry);
-                        }
-                    }
-                    ParticipantInfo participantInfo = entry.getParticipantInfo();
-                    if (participantInfo != null) {
-                        if (participantInfo.getRstrList() != null) {
-                            RstrList rstrList = participantInfo.getRstrList();
-                            rstrList.setParticipantInfo(participantInfo);
-                        }
-                        participantInfo.setBicDirectoryEntry(entry);
-                    }
-                    List<Account> accounts = entry.getAccounts();
-                    if (!CollectionUtils.isEmpty(accounts)) {
-                        for (Account account : accounts) {
-                            account.setBicDirectoryEntry(entry);
-                            if (account.getAccRstrLists() != null) {
-                                List<AccRstrList> accRstrList = account.getAccRstrLists();
-                                for (AccRstrList accRstrLists : accRstrList) {
-                                    accRstrLists.setAccount(account);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            bankMessageRepository.save(bankMessage);
-        }
-    }*/
-
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         FileCopyUtils.copy(multipartFile.getBytes(), file);

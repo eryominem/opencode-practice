@@ -70,6 +70,8 @@ public class BankMessage {
     @XmlAttribute(name = "DirectoryVersion")
     private int directoryVersion;
 
+    private String createdBy;
+
     @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
     @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
     private List<BicDirectoryEntry> bicDirectoryEntries;

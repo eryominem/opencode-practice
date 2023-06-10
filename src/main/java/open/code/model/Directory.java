@@ -1,6 +1,7 @@
 package open.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Directory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,17 +41,17 @@ public class Directory {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    //private String createdBy;
+    private String createdBy;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    //private String updatedBy;
+    private String updatedBy;
 
     @JsonIgnore
     private LocalDateTime deletedAt;
 
-    //private String deletedBy;
+    private String deletedBy;
 
     @JsonIgnore
     private boolean deleted;

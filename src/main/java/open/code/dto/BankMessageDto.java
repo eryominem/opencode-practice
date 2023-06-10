@@ -1,5 +1,6 @@
 package open.code.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonPropertyOrder({"id", "title", "createdAt", "fileName",
         "creationDateTime", "edAuthor", "edReceiver", "creationReason",
-        "edDate", "infoTypeCode", "businessDay", "directoryVersion"})
+        "edDate", "infoTypeCode", "businessDay", "directoryVersion", "createdBy"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BankMessageDto {
     private Long id;
     private LocalDate createdAt;
@@ -30,6 +32,7 @@ public class BankMessageDto {
     private String infoTypeCode;
     private LocalDate businessDay;
     private int directoryVersion;
+    private String createdBy;
 
     public BankMessageDto(BankMessage bankMessage) {
         this.id = bankMessage.getId();
@@ -46,5 +49,6 @@ public class BankMessageDto {
         this.infoTypeCode = bankMessage.getInfoTypeCode();
         this.businessDay = bankMessage.getBusinessDay();
         this.directoryVersion = bankMessage.getDirectoryVersion();
+        this.createdBy = bankMessage.getCreatedBy();
     }
 }

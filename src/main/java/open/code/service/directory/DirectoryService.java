@@ -7,6 +7,7 @@ import open.code.dto.DirectoryDto;
 import open.code.exception.DirectoryTypeException;
 import open.code.repository.DirectoryRepository;
 import open.code.util.DirectoryType;
+import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,8 @@ public class DirectoryService implements DirectoryContract {
                 .validityStart(directoryDto.getValidityStart())
                 .validityEnd(directoryDto.getValidityEnd())
                 .directoryType(directoryType)
+                .createdBy(SecurityUtil.extractNameCurrentUser())
+                .updatedBy(SecurityUtil.extractNameCurrentUser())
                 .build();
         directoryRepository.save(directory);
 
@@ -65,14 +68,13 @@ public class DirectoryService implements DirectoryContract {
         return ResponseEntity.status(HttpStatus.OK).body(directory);
     }
 
-
     @Override
     public ResponseEntity<?> delete(Long id) {
-        directoryRepository.softDelete(id);
-        var deletedDirectory = directoryRepository.findById(id)
+        Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
-        System.out.println(deletedDirectory.toString());
-        return ResponseEntity.status(HttpStatus.OK).body("Successful deletion");
+        directory.setDeletedBy(SecurityUtil.extractNameCurrentUser());
+        directoryRepository.softDelete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
     }
 
     private void updateDirectory(Directory directory, DirectoryDto directoryDto) {
@@ -84,6 +86,8 @@ public class DirectoryService implements DirectoryContract {
             directory.setValidityStart(directoryDto.getValidityStart());
         if (directoryDto.getValidityEnd() != null)
             directory.setValidityEnd(directoryDto.getValidityEnd());
+
+        directory.setUpdatedBy(SecurityUtil.extractNameCurrentUser());
     }
 
     private boolean checkDirectoryType(String directoryType) {

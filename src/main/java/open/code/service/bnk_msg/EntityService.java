@@ -6,9 +6,11 @@ import open.code.repository.bnk_msg.AccountRepository;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
 import open.code.repository.bnk_msg.ParticipantInfoRepository;
+import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
@@ -25,19 +27,10 @@ import java.util.Optional;
 @Service
 public class EntityService {
     private final BankMessageRepository bankMessageRepository;
-    private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
-    private final ParticipantInfoRepository participantInfoRepository;
-    private final AccountRepository accountRepository;
 
     @Autowired
-    public EntityService(BankMessageRepository bankMessageRepository,
-                         BicDirectoryEntryRepository bicDirectoryEntryRepository,
-                         ParticipantInfoRepository participantInfoRepository,
-                         AccountRepository accountRepository) {
+    public EntityService(BankMessageRepository bankMessageRepository) {
         this.bankMessageRepository = bankMessageRepository;
-        this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
-        this.participantInfoRepository = participantInfoRepository;
-        this.accountRepository = accountRepository;
     }
 
     @Transactional
@@ -57,6 +50,7 @@ public class EntityService {
                 bankMessage.setTitle(xmlFile.getName());
             }
 
+            bankMessage.setCreatedBy(SecurityUtil.extractNameCurrentUser());
             bankMessage.setFileName(xmlFile.getName());
             saveEntitiesFromXml(bankMessage);
             return ResponseEntity.ok("File uploaded and entities saved successfully");
@@ -130,4 +124,5 @@ public class EntityService {
         FileCopyUtils.copy(multipartFile.getBytes(), file);
         return file;
     }
+
 }

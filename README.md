@@ -8,12 +8,12 @@
 2. Механизм пакетной загрузки и обновления справочных данных на основе предоставляемых сведений ЦБ РФ.
 Для хранения справочной информации о кредитно-финансовых учреждениях будет использоваться база данных.
 
-### Для реализации проекта использовались следующие технологии и подходы:  
-1. Backend: Spring Boot, Spring MVC, Spring Data, Spring Secuity, Docker.  
-2. База данных: H2 Database.  
-3. Frontend: HTML, CSS, Bootstrap, JQuery, React.  
+### Стэк проекта:  
+1. Backend: [Spring Boot](https://spring.io/projects/spring-boot), [Spring MVC](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html), [Spring Data](https://spring.io/projects/spring-data-jpa), [Spring Secuity](https://spring.io/projects/spring-security), [Docker](https://www.docker.com/).  
+2. База данных: [H2 Database](https://www.h2database.com/html/main.html).  
+3. Frontend: HTML, [SCSS](https://sass-lang.com/), [Bootstrap](https://getbootstrap.com/), JavaScript, [JQuery](https://jquery.com/), [React](https://react.dev/).   
 4. Взаимодействие между backend и frontend осуществляется посредством JSON, REST.  
-5. Для описания API используются Swagger.  
+5. Для описания API используются [Swagger](https://swagger.io/tools/swagger-ui/).  
 
 ### Инструкции по запуску:
 1. Убедитесь, что у вас установлены Java Development Kit (JDK) и Maven.

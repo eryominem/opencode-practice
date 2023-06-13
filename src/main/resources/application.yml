@@ -1,6 +1,5 @@
 server:
   port: 9090
-
 spring:
   datasource:
     url: jdbc:h2:mem:test
@@ -8,7 +7,12 @@ spring:
     password: admin
     driverClassName: org.h2.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
   h2:
-    console.enabled: true
-
+    console:
+      enabled: true
+  security:
+    user:
+      name: "user1"
+      password: "password1"
+      roles: "USER"

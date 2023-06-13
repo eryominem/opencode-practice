@@ -30,7 +30,7 @@ public class Account {
     private String regulationAccountType;
 
     @XmlAttribute(name = "CK")
-    private int CK;
+    private int ck;
 
     @XmlAttribute(name = "AccountCBRBIC")
     private String accountCBRBIC;

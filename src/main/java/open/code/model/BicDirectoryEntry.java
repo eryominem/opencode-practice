@@ -21,7 +21,7 @@ public class BicDirectoryEntry {
     private Long id;
 
     @XmlAttribute(name = "BIC")
-    private String BIC;
+    private String bic;
 
     @XmlAttribute(name = "ChangeType")
     private String changeType;

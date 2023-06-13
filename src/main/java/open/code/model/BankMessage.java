@@ -75,12 +75,4 @@ public class BankMessage {
     @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
     @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
     private List<BicDirectoryEntry> bicDirectoryEntries;
-
-    @XmlElement(name = "InitialED", namespace = "urn:cbr-ru:ed:v2.0")
-    @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
-    private List<InitialED> initialEDS;
-
-    @XmlElement(name = "PartInfo", namespace = "urn:cbr-ru:ed:v2.0")
-    @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
-    private List<PartInfo> partInfos;
 }

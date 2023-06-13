@@ -65,21 +65,6 @@ public class EntityService {
         if (bankMessage == null) {
             return;
         }
-
-        List<InitialED> initialEDS = bankMessage.getInitialEDS();
-        if (initialEDS != null) {
-            for (InitialED initialED : initialEDS) {
-                initialED.setBankMessage(bankMessage);
-            }
-        }
-
-        List<PartInfo> partInfos = bankMessage.getPartInfos();
-        if (partInfos != null) {
-            for (PartInfo partInfo : partInfos) {
-                partInfo.setBankMessage(bankMessage);
-            }
-        }
-
         List<BicDirectoryEntry> bicDirectoryEntries = bankMessage.getBicDirectoryEntries();
         if (!CollectionUtils.isEmpty(bicDirectoryEntries)) {
             for (BicDirectoryEntry entry : bicDirectoryEntries) {

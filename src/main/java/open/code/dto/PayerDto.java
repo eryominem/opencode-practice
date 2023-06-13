@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class PayerDto {
     private Long payerId;
     private Long msgId;
-    private String BIC;
+    private String bic;
     private String changeType;
     private String nameP;
     private String englName;
@@ -33,13 +33,13 @@ public class PayerDto {
     private String ptType;
     private String srvcs;
     private String xchType;
-    private String UID;
+    private String uid;
     private String participantStatus;
 
     public PayerDto(BicDirectoryEntry bicDirectoryEntry, ParticipantInfo participantInfo) {
         this.payerId = bicDirectoryEntry.getId();
         this.msgId = bicDirectoryEntry.getBankMessage().getId();
-        this.BIC = bicDirectoryEntry.getBIC();
+        this.bic = bicDirectoryEntry.getBic();
         this.changeType = bicDirectoryEntry.getChangeType();
         this.nameP = participantInfo.getNameP();
         this.englName = participantInfo.getEnglName();
@@ -55,7 +55,7 @@ public class PayerDto {
         this.ptType = participantInfo.getPtType();
         this.srvcs = participantInfo.getSrvcs();
         this.xchType = participantInfo.getXchType();
-        this.UID = participantInfo.getUID();
+        this.uid = participantInfo.getUid();
         this.participantStatus = participantInfo.getParticipantStatus();
     }
 }

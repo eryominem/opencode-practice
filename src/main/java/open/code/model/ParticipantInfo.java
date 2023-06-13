@@ -69,7 +69,7 @@ public class ParticipantInfo {
     private String xchType;
 
     @XmlAttribute(name = "UID")
-    private String UID;
+    private String uid;
 
     @XmlAttribute(name = "ParticipantStatus")
     private String participantStatus;

@@ -11,4 +11,10 @@ spring:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console.enabled: true
+  security:
+    user:
+      name: "user1"
+      password: "password1"
+      roles: "USER"
+
 

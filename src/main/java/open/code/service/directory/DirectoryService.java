@@ -1,6 +1,7 @@
 package open.code.service.directory;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
 import open.code.exception.DirectoryNotFoundException;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
@@ -17,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 
+@Log4j2
 @Service
 public class DirectoryService implements DirectoryContract {
     private final DirectoryRepository directoryRepository;
@@ -40,8 +42,8 @@ public class DirectoryService implements DirectoryContract {
                 .createdBy(SecurityUtil.extractNameCurrentUser())
                 .updatedBy(SecurityUtil.extractNameCurrentUser())
                 .build();
-        directoryRepository.save(directory);
-
+        directoryRepository.saveAndFlush(directory);
+        log.info("Directory saved successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(directory);
     }
 
@@ -50,6 +52,7 @@ public class DirectoryService implements DirectoryContract {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
+        log.info("Directory successfully returned");
         return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType);
     }
 
@@ -62,9 +65,9 @@ public class DirectoryService implements DirectoryContract {
         if (directory.isDeleted()) {
             throw new DirectoryNotFoundException("Directory has been deleted");
         }
-
         updateDirectory(directory, directoryDto);
         directoryRepository.save(directory);
+        log.info("Directory updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(directory);
     }
 
@@ -74,6 +77,7 @@ public class DirectoryService implements DirectoryContract {
                 .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
         directory.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         directoryRepository.softDelete(id);
+        log.info("Successful deletion");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
     }
 
@@ -86,7 +90,6 @@ public class DirectoryService implements DirectoryContract {
             directory.setValidityStart(directoryDto.getValidityStart());
         if (directoryDto.getValidityEnd() != null)
             directory.setValidityEnd(directoryDto.getValidityEnd());
-
         directory.setUpdatedBy(SecurityUtil.extractNameCurrentUser());
     }
 

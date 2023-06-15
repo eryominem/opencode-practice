@@ -101,7 +101,7 @@ public class EntityService {
                 }
             }
         }
-        bankMessageRepository.save(bankMessage);
+        bankMessageRepository.saveAndFlush(bankMessage);
     }
 
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {

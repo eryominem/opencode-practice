@@ -17,17 +17,18 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import open.code.leaftypes.v2.ReasonCodeType;
 import open.code.leaftypes.v2.RequestCodeType;
 
 
 /**
  * Full National BIC Directory/ National BIC Directory Changes
- * 
+ *
  * <p>Java class for ED807 complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ED807"&gt;
  *   &lt;complexContent&gt;
@@ -44,16 +45,12 @@ import open.code.leaftypes.v2.RequestCodeType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ED807", propOrder = {
-    "bicDirectoryEntry"
+        "bicDirectoryEntry"
 })
-public class ED807
-    extends ESIDWithPartInfo
-{
+public class ED807 extends ESIDWithPartInfo {
 
     @XmlElement(name = "BICDirectoryEntry")
     protected List<BICDirectoryEntryType> bicDirectoryEntry;
@@ -70,25 +67,23 @@ public class ED807
 
     /**
      * Gets the value of the bicDirectoryEntry property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the bicDirectoryEntry property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getBICDirectoryEntry().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link BICDirectoryEntryType }
-     * 
-     * 
      */
     public List<BICDirectoryEntryType> getBICDirectoryEntry() {
         if (bicDirectoryEntry == null) {
@@ -99,11 +94,9 @@ public class ED807
 
     /**
      * Gets the value of the creationReason property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReasonCodeType }
-     *     
+     *
+     * @return possible object is
+     * {@link ReasonCodeType }
      */
     public ReasonCodeType getCreationReason() {
         return creationReason;
@@ -111,11 +104,9 @@ public class ED807
 
     /**
      * Sets the value of the creationReason property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReasonCodeType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ReasonCodeType }
      */
     public void setCreationReason(ReasonCodeType value) {
         this.creationReason = value;
@@ -123,11 +114,9 @@ public class ED807
 
     /**
      * Gets the value of the creationDateTime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getCreationDateTime() {
         return creationDateTime;
@@ -135,11 +124,9 @@ public class ED807
 
     /**
      * Sets the value of the creationDateTime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setCreationDateTime(XMLGregorianCalendar value) {
         this.creationDateTime = value;
@@ -147,11 +134,9 @@ public class ED807
 
     /**
      * Gets the value of the infoTypeCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RequestCodeType }
-     *     
+     *
+     * @return possible object is
+     * {@link RequestCodeType }
      */
     public RequestCodeType getInfoTypeCode() {
         return infoTypeCode;
@@ -159,11 +144,9 @@ public class ED807
 
     /**
      * Sets the value of the infoTypeCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link RequestCodeType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link RequestCodeType }
      */
     public void setInfoTypeCode(RequestCodeType value) {
         this.infoTypeCode = value;
@@ -171,11 +154,9 @@ public class ED807
 
     /**
      * Gets the value of the businessDay property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getBusinessDay() {
         return businessDay;
@@ -183,11 +164,9 @@ public class ED807
 
     /**
      * Sets the value of the businessDay property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setBusinessDay(XMLGregorianCalendar value) {
         this.businessDay = value;
@@ -195,11 +174,9 @@ public class ED807
 
     /**
      * Gets the value of the directoryVersion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getDirectoryVersion() {
         return directoryVersion;
@@ -207,11 +184,9 @@ public class ED807
 
     /**
      * Sets the value of the directoryVersion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setDirectoryVersion(BigInteger value) {
         this.directoryVersion = value;

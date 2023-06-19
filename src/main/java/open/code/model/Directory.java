@@ -55,5 +55,4 @@ public class Directory {
 
     @JsonIgnore
     private boolean deleted;
-
 }

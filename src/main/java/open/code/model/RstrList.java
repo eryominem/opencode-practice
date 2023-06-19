@@ -2,36 +2,21 @@ package open.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import open.code.adapter.LocalDateAdapter;
+import lombok.*;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "RstrList", namespace = "urn:cbr-ru:ed:v2.0")
 public class RstrList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @XmlAttribute(name = "Rstr")
     private String rstr;
 
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    @XmlAttribute(name = "RstrDate")
     private LocalDate rstrDate;
 
     @JsonIgnore

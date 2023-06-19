@@ -2,6 +2,7 @@ package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import open.code.dto.ED807CreationDto;
 import open.code.model.*;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.SecurityUtil;
@@ -39,17 +40,18 @@ public class EntityService {
         }
         try {
             File xmlFile = convertMultipartFileToFile(file);
-            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessage.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ED807CreationDto.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            BankMessage bankMessage = (BankMessage) unmarshaller.unmarshal(xmlFile);
+            ED807CreationDto ed807CreationDto = (ED807CreationDto) unmarshaller.unmarshal(xmlFile);
             if (title.isPresent()) {
-                bankMessage.setTitle(title.get());
+                ed807CreationDto.setTitle(title.get());
             } else {
-                bankMessage.setTitle(xmlFile.getName());
+                ed807CreationDto.setTitle(xmlFile.getName());
             }
-            bankMessage.setCreatedBy(SecurityUtil.extractNameCurrentUser());
-            bankMessage.setFileName(xmlFile.getName());
-            saveEntitiesFromXml(bankMessage);
+            ed807CreationDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
+            ed807CreationDto.setFileName(xmlFile.getName());
+            saveEntitiesFromXml(builder(ed807CreationDto));
+            System.out.println(ed807CreationDto);
             log.info("File uploaded and entities saved successfully");
             return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {
@@ -57,6 +59,24 @@ public class EntityService {
             log.error("Failed to process the uploaded file");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the uploaded file");
         }
+    }
+
+    private BankMessage builder(ED807CreationDto ed807CreationDto){
+        return BankMessage.builder()
+                .title(ed807CreationDto.getTitle())
+                .fileName(ed807CreationDto.getFileName())
+                .createdBy(ed807CreationDto.getCreatedBy())
+                .eDNo(ed807CreationDto.getEDNo())
+                .eDDate(ed807CreationDto.getEDDate())
+                .eDAuthor(ed807CreationDto.getEDAuthor())
+                .eDReceiver(ed807CreationDto.getEDReceiver())
+                .creationReason(ed807CreationDto.getCreationReason())
+                .creationDateTime(ed807CreationDto.getCreationDateTime())
+                .infoTypeCode(ed807CreationDto.getInfoTypeCode())
+                .businessDay(ed807CreationDto.getBusinessDay())
+                .directoryVersion(ed807CreationDto.getDirectoryVersion())
+                .bicDirectoryEntries(ed807CreationDto.getBicDirectoryEntries())
+                .build();
     }
 
     @Transactional

@@ -2,7 +2,9 @@ package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
-import open.code.dto.ED807CreationDto;
+import open.code.dto.BankMessageDto;
+import open.code.mapper.BankMessageMapper;
+import open.code.mapper.BankMessageMapperImpl;
 import open.code.model.*;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.SecurityUtil;
@@ -26,10 +28,11 @@ import java.util.Optional;
 @Service
 public class EntityService {
     private final BankMessageRepository bankMessageRepository;
-
+    private final BankMessageMapper bankMessageMapper;
     @Autowired
-    public EntityService(BankMessageRepository bankMessageRepository) {
+    public EntityService(BankMessageRepository bankMessageRepository, BankMessageMapper bankMessageMapper) {
         this.bankMessageRepository = bankMessageRepository;
+        this.bankMessageMapper = bankMessageMapper;
     }
 
     @Transactional
@@ -40,18 +43,17 @@ public class EntityService {
         }
         try {
             File xmlFile = convertMultipartFileToFile(file);
-            JAXBContext jaxbContext = JAXBContext.newInstance(ED807CreationDto.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessageDto.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            ED807CreationDto ed807CreationDto = (ED807CreationDto) unmarshaller.unmarshal(xmlFile);
+            BankMessageDto bankMessageDto = (BankMessageDto) unmarshaller.unmarshal(xmlFile);
             if (title.isPresent()) {
-                ed807CreationDto.setTitle(title.get());
+                bankMessageDto.setTitle(title.get());
             } else {
-                ed807CreationDto.setTitle(xmlFile.getName());
+                bankMessageDto.setTitle(xmlFile.getName());
             }
-            ed807CreationDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
-            ed807CreationDto.setFileName(xmlFile.getName());
-            saveEntitiesFromXml(builder(ed807CreationDto));
-            System.out.println(ed807CreationDto);
+            bankMessageDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
+            bankMessageDto.setFileName(xmlFile.getName());
+            saveEntitiesFromXml(transformDtoToBankMessage(bankMessageDto));
             log.info("File uploaded and entities saved successfully");
             return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {
@@ -61,22 +63,8 @@ public class EntityService {
         }
     }
 
-    private BankMessage builder(ED807CreationDto ed807CreationDto){
-        return BankMessage.builder()
-                .title(ed807CreationDto.getTitle())
-                .fileName(ed807CreationDto.getFileName())
-                .createdBy(ed807CreationDto.getCreatedBy())
-                .eDNo(ed807CreationDto.getEDNo())
-                .eDDate(ed807CreationDto.getEDDate())
-                .eDAuthor(ed807CreationDto.getEDAuthor())
-                .eDReceiver(ed807CreationDto.getEDReceiver())
-                .creationReason(ed807CreationDto.getCreationReason())
-                .creationDateTime(ed807CreationDto.getCreationDateTime())
-                .infoTypeCode(ed807CreationDto.getInfoTypeCode())
-                .businessDay(ed807CreationDto.getBusinessDay())
-                .directoryVersion(ed807CreationDto.getDirectoryVersion())
-                .bicDirectoryEntries(ed807CreationDto.getBicDirectoryEntries())
-                .build();
+    private BankMessage transformDtoToBankMessage(BankMessageDto bankMessageDto){
+        return bankMessageMapper.toModel(bankMessageDto);
     }
 
     @Transactional

@@ -2,10 +2,10 @@ package open.code.service.directory;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
-import open.code.exception.DirectoryNotFoundException;
+import open.code.exception.directory_exception.DirectoryNotFoundException;
+import open.code.exception.directory_exception.DirectoryTypeException;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
-import open.code.exception.DirectoryTypeException;
 import open.code.repository.DirectoryRepository;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
@@ -33,7 +33,7 @@ public class DirectoryService implements DirectoryContract {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
-        var directory = Directory.builder()
+        Directory directory = Directory.builder()
                 .code(directoryDto.getCode())
                 .name(directoryDto.getName())
                 .validityStart(directoryDto.getValidityStart())
@@ -42,7 +42,7 @@ public class DirectoryService implements DirectoryContract {
                 .createdBy(SecurityUtil.extractNameCurrentUser())
                 .updatedBy(SecurityUtil.extractNameCurrentUser())
                 .build();
-        directoryRepository.saveAndFlush(directory);
+        directoryRepository.save(directory);
         log.info("Directory saved successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(directory);
     }
@@ -65,6 +65,7 @@ public class DirectoryService implements DirectoryContract {
         if (directory.isDeleted()) {
             throw new DirectoryNotFoundException("Directory has been deleted");
         }
+
         updateDirectory(directory, directoryDto);
         directoryRepository.save(directory);
         log.info("Directory updated successfully");
@@ -74,7 +75,7 @@ public class DirectoryService implements DirectoryContract {
     @Override
     public ResponseEntity<?> delete(Long id) {
         Directory directory = directoryRepository.findById(id)
-                .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
+                .orElseThrow(() -> new DirectoryTypeException("Directory not found"));
         directory.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         directoryRepository.softDelete(id);
         log.info("Successful deletion");
@@ -90,6 +91,7 @@ public class DirectoryService implements DirectoryContract {
             directory.setValidityStart(directoryDto.getValidityStart());
         if (directoryDto.getValidityEnd() != null)
             directory.setValidityEnd(directoryDto.getValidityEnd());
+
         directory.setUpdatedBy(SecurityUtil.extractNameCurrentUser());
     }
 

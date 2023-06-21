@@ -11,6 +11,8 @@ import java.util.List;
 @XmlRootElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BicDirectoryEntryDto {
+    private Long id;
+
     @XmlAttribute(name = "BIC")
     private String bic;
 

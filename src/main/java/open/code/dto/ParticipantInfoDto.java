@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @XmlRootElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ParticipantInfoDto {
+    private Long id;
+
     @XmlAttribute(name = "NameP")
     private String nameP;
 

@@ -15,3 +15,5 @@ spring:
       name: "user"
       password: "password"
       roles: "USER"
+  main:
+    allow-circular-references: true

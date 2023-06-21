@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "SWBICS", namespace = "urn:cbr-ru:ed:v2.0")
 public class SWBICSDto {
+    private Long id;
     @XmlAttribute(name = "SWBIC")
     private String swbic;
 

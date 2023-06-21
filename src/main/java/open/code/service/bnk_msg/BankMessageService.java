@@ -20,10 +20,10 @@ public class BankMessageService {
         this.bankMessageRepository = bankMessageRepository;
     }
 
-    public List<BankMessageDto> transformBankMessageToDto() {
+    /*public List<BankMessageDto> transformBankMessageToDto() {
         log.info("Bank message received");
         List<BankMessage> bankMessages = bankMessageRepository.findAll();
         log.info("Bank message returned successfully");
         return bankMessages.stream().map(BankMessageDto::new).collect(Collectors.toList());
-    }
+    }*/
 }

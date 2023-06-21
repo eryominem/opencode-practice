@@ -28,8 +28,8 @@ public class BankMessageController {
         return entityService.saveEntitiesFromXml(file, title);
     }
 
-    @GetMapping
+   /* @GetMapping
     public List<BankMessageDto> getMessages() {
         return bankMessageService.transformBankMessageToDto();
-    }
+    }*/
 }

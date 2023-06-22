@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
         uses = {BicDirectoryMapper.class, ParticipantMapper.class, AccountMapper.class, SWBICSMapper.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface BankMessageMapper {
-
     @Mapping(target = "eDNo", source = "EDNo")
     @Mapping(target = "eDDate", source = "EDDate")
     @Mapping(target = "eDAuthor", source = "EDAuthor")

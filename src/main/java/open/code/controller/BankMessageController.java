@@ -1,6 +1,7 @@
 package open.code.controller;
 
-import open.code.dto.BankMessageDto;
+import open.code.dto.BankMsgViewDto;
+import open.code.model.BankMessage;
 import open.code.service.bnk_msg.BankMessageService;
 import open.code.service.bnk_msg.EntityService;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class BankMessageController {
         return entityService.saveEntitiesFromXml(file, title);
     }
 
-   /* @GetMapping
-    public List<BankMessageDto> getMessages() {
-        return bankMessageService.transformBankMessageToDto();
-    }*/
+    @GetMapping
+    public List<BankMsgViewDto> getMessages() {
+        return bankMessageService.transformBankMsgToViewDto();
+    }
 }

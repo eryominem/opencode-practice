@@ -2,6 +2,7 @@ package open.code.service.bnk_msg;
 
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMessageDto;
+import open.code.dto.BankMsgViewDto;
 import open.code.model.BankMessage;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ public class BankMessageService {
         this.bankMessageRepository = bankMessageRepository;
     }
 
-    /*public List<BankMessageDto> transformBankMessageToDto() {
+    public List<BankMsgViewDto> transformBankMsgToViewDto() {
         log.info("Bank message received");
         List<BankMessage> bankMessages = bankMessageRepository.findAll();
         log.info("Bank message returned successfully");
-        return bankMessages.stream().map(BankMessageDto::new).collect(Collectors.toList());
-    }*/
+        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
+    }
 }

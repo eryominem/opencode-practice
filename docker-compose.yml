@@ -1,0 +1,12 @@
+version: '2.1'
+services:
+  backend:
+    image: cherdak163/opencode:latest
+    ports:
+      - "9090:9090"
+
+#  frontend:
+#    image:
+#    ports:
+#    depends_on:
+#      -

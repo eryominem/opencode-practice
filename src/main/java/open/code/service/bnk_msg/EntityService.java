@@ -1,6 +1,7 @@
 package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMessageDto;
 import open.code.mapper.BankMessageMapper;
@@ -63,7 +64,7 @@ public class EntityService {
         }
     }
 
-    private BankMessage transformDtoToBankMessage(BankMessageDto bankMessageDto){
+    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto){
         return bankMessageMapper.toModel(bankMessageDto);
     }
 

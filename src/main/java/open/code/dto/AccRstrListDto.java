@@ -1,5 +1,6 @@
 package open.code.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 @XmlRootElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
 public class AccRstrListDto {
     @XmlAttribute(name = "AccRstr")
+    @Size(min = 4, max = 4)
     private String accRstr;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -24,5 +26,6 @@ public class AccRstrListDto {
     private LocalDate accRstrDate;
 
     @XmlAttribute(name = "SuccessorBIC")
+    @Size(min = 9, max = 9)
     private String successorBIC;
 }

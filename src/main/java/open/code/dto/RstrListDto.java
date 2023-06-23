@@ -1,5 +1,6 @@
 package open.code.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 public class RstrListDto {
 
     @XmlAttribute(name = "Rstr")
+    @Size(min = 4, max = 4)
     private String rstr;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)

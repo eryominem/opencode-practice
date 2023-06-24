@@ -1,7 +1,7 @@
 package open.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +23,8 @@ public class BankMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String title;
 
-    @NotNull
     private String fileName;
 
     private String eDNo;
@@ -54,6 +52,13 @@ public class BankMessage {
     private int directoryVersion;
 
     private String createdBy;
+
+    private String deletedBy;
+
+    private LocalDateTime deletedAt;
+
+    @JsonIgnore
+    private boolean deleted;
 
     @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
     private List<BicDirectoryEntry> bicDirectoryEntries;

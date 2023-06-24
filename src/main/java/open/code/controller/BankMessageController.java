@@ -33,4 +33,9 @@ public class BankMessageController {
     public List<BankMsgViewDto> getMessages() {
         return bankMessageService.transformBankMsgToViewDto();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return bankMessageService.deleteById(id);
+    }
 }

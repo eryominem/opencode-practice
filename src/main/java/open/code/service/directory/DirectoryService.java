@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,10 +75,11 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
-    public ResponseEntity<?> delete(Long id) {
+    public ResponseEntity<?> deleteById(Long id) {
         Directory directory = directoryRepository.findById(id)
-                .orElseThrow(() -> new DirectoryTypeException("Directory not found"));
+                .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
         directory.setDeletedBy(SecurityUtil.extractNameCurrentUser());
+        directory.setDeletedAt(LocalDateTime.now());
         directoryRepository.softDelete(id);
         log.info("Successful deletion");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");

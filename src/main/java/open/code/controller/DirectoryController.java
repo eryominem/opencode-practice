@@ -37,6 +37,6 @@ public class DirectoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        return directoryService.delete(id);
+        return directoryService.deleteById(id);
     }
 }

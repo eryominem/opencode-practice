@@ -3,6 +3,7 @@ package open.code.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import open.code.enums.RstrType;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,8 @@ public class RstrList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String rstr;
+    @Enumerated(EnumType.STRING)
+    private RstrType rstr;
 
     private LocalDate rstrDate;
 

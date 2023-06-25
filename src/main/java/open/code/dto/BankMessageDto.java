@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
+import open.code.enums.ReasonCodeType;
+import open.code.enums.RequestCodeType;
 import org.hibernate.validator.constraints.Length;
 
 import javax.xml.bind.annotation.*;
@@ -51,7 +53,7 @@ public class BankMessageDto {
 
     @XmlAttribute(name = "CreationReason")
     @Size(min = 4, max = 4)
-    private String creationReason;
+    private ReasonCodeType creationReason;
 
     @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     @XmlAttribute(name = "CreationDateTime")
@@ -59,7 +61,7 @@ public class BankMessageDto {
 
     @XmlAttribute(name = "InfoTypeCode")
     @Size(min = 4, max = 4)
-    private String infoTypeCode;
+    private RequestCodeType infoTypeCode;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     @XmlAttribute(name = "BusinessDay")

@@ -3,6 +3,7 @@ package open.code.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import open.code.enums.ChangeType;
 
 import java.util.List;
 
@@ -19,7 +20,8 @@ public class BicDirectoryEntry {
 
     private String bic;
 
-    private String changeType;
+    @Enumerated(EnumType.STRING)
+    private ChangeType changeType;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "participantInfo_id")

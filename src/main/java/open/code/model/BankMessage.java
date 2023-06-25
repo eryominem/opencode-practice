@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import open.code.enums.ReasonCodeType;
+import open.code.enums.RequestCodeType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -35,7 +37,8 @@ public class BankMessage {
 
     private String eDReceiver;
 
-    private String creationReason;
+    @Enumerated(EnumType.STRING)
+    private ReasonCodeType creationReason;
 
     private LocalDateTime creationDateTime;
 
@@ -45,7 +48,8 @@ public class BankMessage {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
-    private String infoTypeCode;
+    @Enumerated(EnumType.STRING)
+    private RequestCodeType infoTypeCode;
 
     private LocalDate businessDay;
 

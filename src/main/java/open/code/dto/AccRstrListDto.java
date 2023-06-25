@@ -3,6 +3,7 @@ package open.code.dto;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import open.code.adapter.LocalDateAdapter;
+import open.code.enums.RstrType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 public class AccRstrListDto {
     @XmlAttribute(name = "AccRstr")
     @Size(min = 4, max = 4)
-    private String accRstr;
+    private RstrType accRstr;
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     @XmlAttribute(name = "AccRstrDate")

@@ -40,7 +40,7 @@ public class PayerDto {
         this.payerId = bicDirectoryEntry.getId();
         this.msgId = bicDirectoryEntry.getBankMessage().getId();
         this.bic = bicDirectoryEntry.getBic();
-        this.changeType = bicDirectoryEntry.getChangeType();
+        this.changeType = String.valueOf(bicDirectoryEntry.getChangeType());
         this.nameP = participantInfo.getNameP();
         this.englName = participantInfo.getEnglName();
         this.regN = participantInfo.getRegN();
@@ -56,6 +56,6 @@ public class PayerDto {
         this.srvcs = participantInfo.getSrvcs();
         this.xchType = participantInfo.getXchType();
         this.uid = participantInfo.getUid();
-        this.participantStatus = participantInfo.getParticipantStatus();
+        this.participantStatus = String.valueOf(participantInfo.getParticipantStatus());
     }
 }

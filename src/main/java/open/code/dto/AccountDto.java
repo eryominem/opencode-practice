@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
+import open.code.enums.AccountStatusType;
+import open.code.enums.AccountType;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -25,7 +27,7 @@ public class AccountDto {
 
     @XmlAttribute(name = "RegulationAccountType")
     @Size(min = 4, max = 4)
-    private String regulationAccountType;
+    private AccountType regulationAccountType;
 
     @XmlAttribute(name = "CK")
     @Digits(integer = 2, fraction = 0)
@@ -41,7 +43,7 @@ public class AccountDto {
 
     @XmlAttribute(name = "AccountStatus")
     @Size(min = 4, max = 4)
-    private String accountStatus;
+    private AccountStatusType accountStatus;
 
     @XmlElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<AccRstrListDto> accRstrLists;

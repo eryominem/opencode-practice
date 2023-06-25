@@ -2,6 +2,7 @@ package open.code.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import open.code.enums.ChangeType;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -20,7 +21,7 @@ public class BicDirectoryEntryDto {
 
     @XmlAttribute(name = "ChangeType")
     @Size(min = 4, max = 4)
-    private String changeType;
+    private ChangeType changeType;
 
     @XmlElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
     private ParticipantInfoDto participantInfo;

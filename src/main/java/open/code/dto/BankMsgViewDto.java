@@ -37,14 +37,13 @@ public class BankMsgViewDto {
                 .eDDate(bankMessage.getEDDate())
                 .eDAuthor(bankMessage.getEDAuthor())
                 .eDReceiver(bankMessage.getEDReceiver())
-                .creationReason(bankMessage.getCreationReason())
+                .creationReason(String.valueOf(bankMessage.getCreationReason()))
                 .creationDateTime(bankMessage.getCreationDateTime())
-                .infoTypeCode(bankMessage.getInfoTypeCode())
+                .infoTypeCode(String.valueOf(bankMessage.getInfoTypeCode()))
                 .businessDay(bankMessage.getBusinessDay())
                 .directoryVersion(bankMessage.getDirectoryVersion())
                 .createdBy(bankMessage.getCreatedBy())
                 .build();
         return bankMsgViewDto;
     }
-
 }

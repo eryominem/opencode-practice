@@ -3,6 +3,8 @@ package open.code.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import open.code.enums.AccountStatusType;
+import open.code.enums.AccountType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +21,8 @@ public class Account {
 
     private String account;
 
-    private String regulationAccountType;
+    @Enumerated(EnumType.STRING)
+    private AccountType regulationAccountType;
 
     private int ck;
 
@@ -27,7 +30,8 @@ public class Account {
 
     private LocalDate dateIn;
 
-    private String accountStatus;
+    @Enumerated(EnumType.STRING)
+    private AccountStatusType accountStatus;
 
     @JsonIgnore
     @ManyToOne

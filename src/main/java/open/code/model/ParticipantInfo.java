@@ -3,6 +3,7 @@ package open.code.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import open.code.enums.ParticipantStatusType;
 
 import java.time.LocalDate;
 
@@ -48,7 +49,8 @@ public class  ParticipantInfo {
 
     private String uid;
 
-    private String participantStatus;
+    @Enumerated(EnumType.STRING)
+    private ParticipantStatusType participantStatus;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rstrList_id")

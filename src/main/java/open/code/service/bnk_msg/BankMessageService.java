@@ -1,7 +1,6 @@
 package open.code.service.bnk_msg;
 
 import lombok.extern.log4j.Log4j2;
-import open.code.dto.BankMessageDto;
 import open.code.dto.BankMsgViewDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.model.BankMessage;
@@ -32,9 +31,19 @@ public class BankMessageService {
         return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
     }
 
+    public BankMsgViewDto recoveryById(Long id) {
+        BankMessage bankMessage = bankMessageRepository.findById(id)
+                .orElseThrow(() -> new BankMessageNotFoundException("ED807 not found"));
+        bankMessage.setDeletedBy(null);
+        log.info("BankMessage recovered successfully");
+        bankMessageRepository.softRecovery(id);
+        return BankMsgViewDto.build(bankMessage);
+    }
+
     public ResponseEntity<?> deleteById(Long id) {
         BankMessage bankMessage = bankMessageRepository.findById(id)
                 .orElseThrow(() -> new BankMessageNotFoundException("ED807 not found"));
+        log.info("BankMessage deleted successfully");
         bankMessage.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         bankMessageRepository.softDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");

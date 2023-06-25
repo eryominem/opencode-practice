@@ -1,7 +1,6 @@
 package open.code.controller;
 
 import open.code.dto.BankMsgViewDto;
-import open.code.model.BankMessage;
 import open.code.service.bnk_msg.BankMessageService;
 import open.code.service.bnk_msg.EntityService;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +31,11 @@ public class BankMessageController {
     @GetMapping
     public List<BankMsgViewDto> getMessages() {
         return bankMessageService.transformBankMsgToViewDto();
+    }
+
+    @PatchMapping("/{id}")
+    public BankMsgViewDto recovery(@PathVariable("id") Long id) {
+        return bankMessageService.recoveryById(id);
     }
 
     @DeleteMapping("/{id}")

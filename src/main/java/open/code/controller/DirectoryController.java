@@ -30,6 +30,11 @@ public class DirectoryController {
         return directoryService.getAll(directoryType);
     }
 
+    @PatchMapping("/{id}")
+    public Directory recovery(@PathVariable("id") Long id) {
+        return directoryService.recoveryById(id);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Directory> update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
         return directoryService.update(id, directoryDto);

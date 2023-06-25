@@ -18,4 +18,9 @@ public interface DirectoryRepository extends JpaRepository<Directory, Long> {
     @Modifying
     @Query("UPDATE Directory e SET e.deleted = true, e.deletedAt = CURRENT_TIMESTAMP WHERE e.id = :id")
     void softDelete(@Param("id") Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Directory e SET e.deleted = false WHERE e.id = :id")
+    void softRecovery(@Param("id") Long id);
 }

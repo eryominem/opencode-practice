@@ -18,4 +18,9 @@ public interface BankMessageRepository extends JpaRepository<BankMessage, Long> 
     @Modifying
     @Query("UPDATE BankMessage bm SET bm.deleted = true, bm.deletedAt = CURRENT_TIMESTAMP WHERE bm.id = :id")
     void softDelete(@Param("id") Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE BankMessage bm SET bm.deleted = false WHERE bm.id = :id")
+    void softRecovery(@Param("id") Long id);
 }

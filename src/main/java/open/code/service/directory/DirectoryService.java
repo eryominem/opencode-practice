@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +62,6 @@ public class DirectoryService implements DirectoryContract {
     public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
         if (directory.isDeleted()) {
             throw new DirectoryNotFoundException("Directory has been deleted");
         }
@@ -72,6 +70,16 @@ public class DirectoryService implements DirectoryContract {
         directoryRepository.save(directory);
         log.info("Directory updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(directory);
+    }
+
+    public Directory recoveryById(Long id) {
+        Directory directory = directoryRepository.findById(id)
+                .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
+        directory.setDeletedBy(null);
+        directory.setDeletedAt(null);
+        log.info("Directory recovered successfully");
+        directoryRepository.softRecovery(id);
+        return directory;
     }
 
     @Override

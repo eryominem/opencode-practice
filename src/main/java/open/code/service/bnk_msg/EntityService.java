@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMessageDto;
 import open.code.mapper.BankMessageMapper;
-import open.code.mapper.BankMessageMapperImpl;
 import open.code.model.*;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.SecurityUtil;
@@ -30,6 +29,7 @@ import java.util.Optional;
 public class EntityService {
     private final BankMessageRepository bankMessageRepository;
     private final BankMessageMapper bankMessageMapper;
+
     @Autowired
     public EntityService(BankMessageRepository bankMessageRepository, BankMessageMapper bankMessageMapper) {
         this.bankMessageRepository = bankMessageRepository;
@@ -64,7 +64,7 @@ public class EntityService {
         }
     }
 
-    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto){
+    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto) {
         return bankMessageMapper.toModel(bankMessageDto);
     }
 

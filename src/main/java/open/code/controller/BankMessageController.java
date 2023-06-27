@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,16 @@ public class BankMessageController {
     public BankMessageController(EntityService entityService, BankMessageService bankMessageService) {
         this.entityService = entityService;
         this.bankMessageService = bankMessageService;
+    }
+
+    @GetMapping(value = "/filter/title")
+    public List<BankMsgViewDto> findByName(@RequestParam("title") String title) {
+        return bankMessageService.findAllBankMessageByName(title);
+    }
+
+    @GetMapping(value = "/filter/date")
+    public List<BankMsgViewDto> findByDate(@RequestParam("date1") LocalDate date1, @RequestParam("date2") Optional<LocalDate> date2) {
+        return bankMessageService.findByDateBetween(date1, date2);
     }
 
     @PostMapping

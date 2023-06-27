@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -28,6 +30,17 @@ public class BankMessageService {
         log.info("Bank message received");
         List<BankMessage> bankMessages = bankMessageRepository.findByDeletedFalse();
         log.info("Bank message returned successfully");
+        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
+    }
+
+    public List<BankMsgViewDto> findAllBankMessageByName(String title) {
+        List<BankMessage> bankMessages = bankMessageRepository.findAllByTitle(title);
+        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
+    }
+
+    public List<BankMsgViewDto> findByDateBetween(LocalDate date1, Optional<LocalDate> date2) {
+        LocalDate localDate = date2.orElseGet(LocalDate::now);
+        List<BankMessage> bankMessages = bankMessageRepository.findByDeletedFalseAndCreatedAtBetween(date1, localDate);
         return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
     }
 

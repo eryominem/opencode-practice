@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface DirectoryContract {
-    public ResponseEntity<Directory> add(DirectoryDto directoryDto, String directoryType);
+    ResponseEntity<Directory> add(DirectoryDto directoryDto, String directoryType);
 
-    public List<Directory> getAll(String directoryType);
+    List<Directory> getAll(String directoryType, Long dicId);
 
-    public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto);
+    ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto);
 
-    public ResponseEntity<?> deleteById(Long id);
+    ResponseEntity<?> deleteById(Long id);
+
+    Directory recoveryById(Long id);
 }

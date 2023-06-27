@@ -24,12 +24,11 @@ public class BicDirectoryService {
     /**
      * Return all payers from a specific file
      */
-    public List<PayerDto> transformBicDirectoriesToPayers(Long id) {
+    public List<PayerDto> transformBicDirectoriesToPayers(Long msgId, Long bicId) {
         log.info("Bic directory entries received");
-        List<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAllByBankMessageId(id);
+        List<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAll(msgId, bicId);
         log.info("Payers returned successfully");
         return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
                 .collect(Collectors.toList());
     }
-
 }

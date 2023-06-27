@@ -17,15 +17,8 @@ public class BicDirectoryController {
         this.bicDirectoryService = bicDirectoryService;
     }
 
-    @PostMapping
-    public void createPayer(@RequestParam("msgId") Long id,
-                            @RequestBody PayerDto payerDto) {
-
-    }
-
     @GetMapping
-    public List<PayerDto> getPayers(@RequestParam("msgId") Long id) {
-        return bicDirectoryService.transformBicDirectoriesToPayers(id);
+    public List<PayerDto> getPayers(@RequestParam("msgId") Long msgId, @RequestParam("bicId") Long bicId) {
+        return bicDirectoryService.transformBicDirectoriesToPayers(msgId, bicId);
     }
-
 }

@@ -49,12 +49,12 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
-    public List<Directory> getAll(String directoryType) {
+    public List<Directory> getAll(String directoryType, Long dicId) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
         log.info("Directory successfully returned");
-        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType);
+        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType, dicId);
     }
 
     @Override

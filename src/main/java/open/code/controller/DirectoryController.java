@@ -26,8 +26,8 @@ public class DirectoryController {
     }
 
     @GetMapping("/{type}")
-    public List<Directory> getAll(@PathVariable("type") String directoryType) {
-        return directoryService.getAll(directoryType);
+    public List<Directory> getAll(@PathVariable("type") String directoryType, @RequestParam("dicId") Long dicId) {
+        return directoryService.getAll(directoryType, dicId);
     }
 
     @PatchMapping("/{id}")

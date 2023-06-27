@@ -12,7 +12,9 @@ import java.util.List;
 
 @Repository
 public interface DirectoryRepository extends JpaRepository<Directory, Long> {
-    List<Directory> findByDirectoryTypeAndDeletedFalse(String directoryType);
+
+    @Query("from Directory where directoryType = :directoryType and deleted = false and id > :dicId order by id ASC LIMIT 25")
+    List<Directory> findByDirectoryTypeAndDeletedFalse(@Param("directoryType") String directoryType, @Param("dicId") Long dicId);
 
     @Transactional
     @Modifying

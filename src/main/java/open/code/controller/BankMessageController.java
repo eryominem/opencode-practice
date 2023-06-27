@@ -33,7 +33,7 @@ public class BankMessageController {
         return bankMessageService.findByDateBetween(date1, date2);
     }
 
-    @PostMapping
+    @PostMapping("/upload")
     public ResponseEntity<?> uploadMessage(@RequestPart("file") MultipartFile file,
                                            @RequestParam("title") Optional<String> title) {
         return entityService.saveEntitiesFromXml(file, title);

@@ -19,7 +19,7 @@ public class DirectoryController {
         this.directoryService = directoryService;
     }
 
-    @PostMapping("/{type}")
+    @PostMapping("/upload/{type}")
     public ResponseEntity<Directory> add(@RequestBody DirectoryDto directoryDto,
                                          @PathVariable("type") String directoryType) {
         return directoryService.add(directoryDto, directoryType);

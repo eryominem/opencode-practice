@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMessageDto;
 import open.code.mapper.BankMessageMapper;
-import open.code.mapper.BankMessageMapperImpl;
 import open.code.model.*;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.SecurityUtil;
@@ -30,6 +29,7 @@ import java.util.Optional;
 public class EntityService {
     private final BankMessageRepository bankMessageRepository;
     private final BankMessageMapper bankMessageMapper;
+
     @Autowired
     public EntityService(BankMessageRepository bankMessageRepository, BankMessageMapper bankMessageMapper) {
         this.bankMessageRepository = bankMessageRepository;
@@ -62,10 +62,6 @@ public class EntityService {
             log.error("Failed to process the uploaded file");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the uploaded file");
         }
-    }
-
-    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto){
-        return bankMessageMapper.toModel(bankMessageDto);
     }
 
     @Transactional
@@ -109,6 +105,10 @@ public class EntityService {
         }
         log.info("Bank message saved successfully");
         bankMessageRepository.saveAndFlush(bankMessage);
+    }
+
+    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto) {
+        return bankMessageMapper.toModel(bankMessageDto);
     }
 
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {

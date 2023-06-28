@@ -64,10 +64,6 @@ public class EntityService {
         }
     }
 
-    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto) {
-        return bankMessageMapper.toModel(bankMessageDto);
-    }
-
     @Transactional
     public void saveEntitiesFromXml(BankMessage bankMessage) {
         if (bankMessage == null) {
@@ -109,6 +105,10 @@ public class EntityService {
         }
         log.info("Bank message saved successfully");
         bankMessageRepository.saveAndFlush(bankMessage);
+    }
+
+    private BankMessage transformDtoToBankMessage(@Valid BankMessageDto bankMessageDto) {
+        return bankMessageMapper.toModel(bankMessageDto);
     }
 
     private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {

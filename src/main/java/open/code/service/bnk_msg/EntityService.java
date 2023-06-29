@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.JAXBContext;
@@ -36,7 +37,6 @@ public class EntityService {
         this.bankMessageMapper = bankMessageMapper;
     }
 
-    @Transactional
     public ResponseEntity<?> saveEntitiesFromXml(MultipartFile file, Optional<String> title) {
         if (file.isEmpty()) {
             log.warn("No file uploaded");
@@ -64,7 +64,7 @@ public class EntityService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackOn = MethodArgumentNotValidException.class)
     public void saveEntitiesFromXml(BankMessage bankMessage) {
         if (bankMessage == null) {
             log.error("Bank message is null");

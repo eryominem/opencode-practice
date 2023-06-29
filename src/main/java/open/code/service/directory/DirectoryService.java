@@ -30,6 +30,7 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Directory> add(DirectoryDto directoryDto, String directoryType) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
@@ -72,6 +73,7 @@ public class DirectoryService implements DirectoryContract {
         return ResponseEntity.status(HttpStatus.OK).body(directory);
     }
 
+    @Transactional
     public Directory recoveryById(Long id) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
@@ -83,6 +85,7 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> deleteById(Long id) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
@@ -93,6 +96,7 @@ public class DirectoryService implements DirectoryContract {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
     }
 
+    @Transactional
     private void updateDirectory(Directory directory, DirectoryDto directoryDto) {
         if (directoryDto.getCode() != null)
             directory.setCode(directoryDto.getCode());

@@ -37,8 +37,9 @@ public class BicDirectoryService {
                 .collect(Collectors.toList());
     }
 
-    public long countAll(Long id) {
-        return bicDirectoryEntryRepository.count();
+    public long countAll(Long msgId) {
+        log.info("Returned count of BIC entries");
+        return bicDirectoryEntryRepository.count(msgId);
     }
 
     public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType, Long id) {

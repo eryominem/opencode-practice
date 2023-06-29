@@ -2,7 +2,8 @@ package open.code.service.bnk_msg;
 
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.PayerDto;
-import open.code.exception.bic_exception.BicEntryNotFound;
+import open.code.dto.SWBICSDto;
+import open.code.exception.bic_exception.BicEntryNotFoundException;
 import open.code.mapper.SWBICSMapper;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
@@ -16,12 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class BicDirectoryService {
     private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
+    private final SWBICSMapper swbicsMapper;
 
     @Autowired
     public BicDirectoryService(BicDirectoryEntryRepository bicDirectoryEntryRepository,
                                SWBICSMapper swbicsMapper) {
         this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
+        this.swbicsMapper = swbicsMapper;
     }
+
 
     /**
      * Return all payers from a specific file
@@ -29,7 +33,8 @@ public class BicDirectoryService {
     public List<PayerDto> transformBicDirectoriesToPayers(Long msgId, Long bicId) {
         List<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAll(msgId, bicId);
         log.info("Payers returned successfully");
-        return bicDirectoryToPayers(bicDirectoryEntries);
+        return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
+                .collect(Collectors.toList());
     }
 
     public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType) {
@@ -49,7 +54,7 @@ public class BicDirectoryService {
             if (nameP != null)
                 return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNameP(nameP));
             else
-                throw new BicEntryNotFound("Not found");
+                throw new BicEntryNotFoundException("Not found");
         }
     }
 
@@ -57,4 +62,5 @@ public class BicDirectoryService {
         return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
                 .collect(Collectors.toList());
     }
+
 }

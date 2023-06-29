@@ -18,14 +18,16 @@ public class BicDirectoryController {
     }
 
     @GetMapping("/count")
-    public long getCount() {
-        return bicDirectoryService.countAll();
+    public long getCount(@RequestParam("id") Long id) {
+        return bicDirectoryService.countAll(id);
     }
+
     @GetMapping("/filter")
     public List<PayerDto> getPayersByFilter(@RequestParam(value = "bic", required = false) String bic,
                                             @RequestParam(value = "nameP", required = false) String nameP,
-                                            @RequestParam(value = "ptType", required = false) String ptType) {
-        return bicDirectoryService.findAllPayersByFilter(bic, nameP, ptType);
+                                            @RequestParam(value = "ptType", required = false) String ptType,
+                                            @RequestParam(value = "msgId") Long id) {
+        return bicDirectoryService.findAllPayersByFilter(bic, nameP, ptType, id);
     }
 
     @GetMapping("/payers")

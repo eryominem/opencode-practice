@@ -12,25 +12,25 @@ import java.util.Optional;
 @Repository
 public interface BicDirectoryEntryRepository extends JpaRepository<BicDirectoryEntry, Long> {
 
-    @Query("select count(*) from BicDirectoryEntry")
-    long count();
+    @Query("select count(*) from BicDirectoryEntry where bankMessage = :id")
+    long count(@Param("id") Long id);
 
     @Query("from BicDirectoryEntry where bankMessage.id = :msgId and id > :bicId order by id ASC LIMIT 25")
     List<BicDirectoryEntry> findAll(@Param("msgId") Long msgId, @Param("bicId") Long bicId);
 
-    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNamePAndParticipantInfoPtType(String bic, String nameP, String ptType);
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(String bic, String nameP, String ptType, Long id);
 
-    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNameP(String bic, String nameP);
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNamePAndBankMessageId(String bic, String nameP, Long id);
 
-    List<BicDirectoryEntry> findAllByBicAndParticipantInfoPtType(String bic, String ptType);
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoPtTypeAndBankMessageId(String bic, String ptType, Long id);
 
-    List<BicDirectoryEntry> findAllByParticipantInfoNamePAndParticipantInfoPtType(String nameP, String ptType);
+    List<BicDirectoryEntry> findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(String nameP, String ptType, Long id);
 
-    List<BicDirectoryEntry> findAllByBic(String bic);
+    List<BicDirectoryEntry> findAllByBicAndBankMessageId(String bic, Long id);
 
-    List<BicDirectoryEntry> findAllByParticipantInfoPtType(String ptType);
+    List<BicDirectoryEntry> findAllByParticipantInfoPtTypeAndBankMessageId(String ptType, Long id);
 
-    List<BicDirectoryEntry> findAllByParticipantInfoNameP(String nameP);
+    List<BicDirectoryEntry> findAllByParticipantInfoNamePAndBankMessageId(String nameP, Long id);
 
     Optional<BicDirectoryEntry> findByBankMessageIdAndId(Long msgId, Long bicId);
 }

@@ -37,26 +37,26 @@ public class BicDirectoryService {
                 .collect(Collectors.toList());
     }
 
-    public long countAll(){
+    public long countAll(Long id) {
         return bicDirectoryEntryRepository.count();
     }
 
-    public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType) {
+    public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType, Long id) {
         if (bic != null) {
             if (nameP != null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndParticipantInfoPtType(bic, nameP, ptType));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bic, nameP, ptType, id));
             else if (nameP != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNameP(bic, nameP));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndBankMessageId(bic, nameP, id));
             else if (ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtType(bic, ptType));
-            else return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBic(bic));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtTypeAndBankMessageId(bic, ptType, id));
+            else return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bic, id));
         } else {
             if (nameP != null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtType(nameP, ptType));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(nameP, ptType, id));
             if (nameP == null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoPtType(ptType));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoPtTypeAndBankMessageId(ptType, id));
             if (nameP != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNameP(nameP));
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndBankMessageId(nameP, id));
             else
                 throw new BicEntryNotFoundException("Not found");
         }

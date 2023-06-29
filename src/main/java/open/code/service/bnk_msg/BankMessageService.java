@@ -1,5 +1,6 @@
 package open.code.service.bnk_msg;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMsgViewDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
@@ -59,6 +60,7 @@ public class BankMessageService {
         }
     }
 
+    @Transactional
     public BankMsgViewDto recoveryById(Long id) {
         BankMessage bankMessage = bankMessageRepository.findById(id)
                 .orElseThrow(() -> new BankMessageNotFoundException("ED807 not found"));
@@ -68,6 +70,7 @@ public class BankMessageService {
         return BankMsgViewDto.build(bankMessage);
     }
 
+    @Transactional
     public ResponseEntity<?> deleteById(Long id) {
         BankMessage bankMessage = bankMessageRepository.findById(id)
                 .orElseThrow(() -> new BankMessageNotFoundException("ED807 not found"));

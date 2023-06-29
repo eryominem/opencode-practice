@@ -32,6 +32,10 @@ public class BicDirectoryService {
         return bicDirectoryToPayers(bicDirectoryEntries);
     }
 
+    public long countAll(){
+        return bicDirectoryEntryRepository.count();
+    }
+
     public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType) {
         if (bic != null) {
             if (nameP != null && ptType != null)

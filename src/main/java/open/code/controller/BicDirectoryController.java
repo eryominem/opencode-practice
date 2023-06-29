@@ -17,6 +17,10 @@ public class BicDirectoryController {
         this.bicDirectoryService = bicDirectoryService;
     }
 
+    @GetMapping("/count")
+    public long getCount() {
+        return bicDirectoryService.countAll();
+    }
     @GetMapping("/filter")
     public List<PayerDto> getPayersByFilter(@RequestParam(value = "bic", required = false) String bic,
                                             @RequestParam(value = "nameP", required = false) String nameP,

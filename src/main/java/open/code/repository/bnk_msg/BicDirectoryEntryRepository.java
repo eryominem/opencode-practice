@@ -11,6 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface BicDirectoryEntryRepository extends JpaRepository<BicDirectoryEntry, Long> {
+
+    @Query("select count(*) from BicDirectoryEntry")
+    long count();
+
     @Query("from BicDirectoryEntry where bankMessage.id = :msgId and id > :bicId order by id ASC LIMIT 25")
     List<BicDirectoryEntry> findAll(@Param("msgId") Long msgId, @Param("bicId") Long bicId);
 

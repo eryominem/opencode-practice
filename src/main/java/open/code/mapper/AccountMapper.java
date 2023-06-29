@@ -74,7 +74,7 @@ public class AccountMapper {
         return accRstrListDto;
     }
 
-    protected List<AccRstrListDto> accRstrListListToAccRstrListDtoList(List<AccRstrList> list) {
+    public List<AccRstrListDto> accRstrListListToAccRstrListDtoList(List<AccRstrList> list) {
         if (list == null) {
             return null;
         }

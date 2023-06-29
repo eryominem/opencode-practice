@@ -30,18 +30,33 @@ public class BankMessageService {
         log.info("Bank message received");
         List<BankMessage> bankMessages = bankMessageRepository.findByDeletedFalse();
         log.info("Bank message returned successfully");
-        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
+        return bankMessageToBankMsgViewDto(bankMessages);
     }
 
-    public List<BankMsgViewDto> findAllBankMessageByName(String title) {
-        List<BankMessage> bankMessages = bankMessageRepository.findAllByTitle(title);
-        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
-    }
-
-    public List<BankMsgViewDto> findByDateBetween(LocalDate date1, Optional<LocalDate> date2) {
-        LocalDate localDate = date2.orElseGet(LocalDate::now);
-        List<BankMessage> bankMessages = bankMessageRepository.findByDeletedFalseAndCreatedAtBetween(date1, localDate);
-        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
+    public List<BankMsgViewDto> findBankMessageByFilter(String title, Optional<LocalDate> date1, Optional<LocalDate> date2) {
+        LocalDate localDate1 = date1.orElseGet(LocalDate::now);
+        LocalDate localDate2 = date2.orElseGet(LocalDate::now);
+        if (title != null) {
+            if (date1.isPresent() && date2.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtBetween(title, localDate1, localDate2));
+            } else if (date1.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsAfter(title, localDate1));
+            } else if (date2.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsBefore(title, localDate2));
+            } else {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findAllByDeletedFalseAndTitle(title));
+            }
+        } else {
+            if (date1.isPresent() && date2.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtBetween(localDate1, localDate2));
+            } else if (date1.isEmpty() && date2.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsBefore(localDate2));
+            } else if (date1.isPresent()) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsAfter(localDate1));
+            } else {
+                throw new BankMessageNotFoundException("BankMessage not found");
+            }
+        }
     }
 
     public BankMsgViewDto recoveryById(Long id) {
@@ -60,5 +75,9 @@ public class BankMessageService {
         bankMessage.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         bankMessageRepository.softDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
+    }
+
+    private List<BankMsgViewDto> bankMessageToBankMsgViewDto(List<BankMessage> bankMessages) {
+        return bankMessages.stream().map(BankMsgViewDto::build).collect(Collectors.toList());
     }
 }

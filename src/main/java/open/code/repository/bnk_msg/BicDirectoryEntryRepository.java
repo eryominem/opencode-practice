@@ -14,5 +14,19 @@ public interface BicDirectoryEntryRepository extends JpaRepository<BicDirectoryE
     @Query("from BicDirectoryEntry where bankMessage.id = :msgId and id > :bicId order by id ASC LIMIT 25")
     List<BicDirectoryEntry> findAll(@Param("msgId") Long msgId, @Param("bicId") Long bicId);
 
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNamePAndParticipantInfoPtType(String bic, String nameP, String ptType);
+
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoNameP(String bic, String nameP);
+
+    List<BicDirectoryEntry> findAllByBicAndParticipantInfoPtType(String bic, String ptType);
+
+    List<BicDirectoryEntry> findAllByParticipantInfoNamePAndParticipantInfoPtType(String nameP, String ptType);
+
+    List<BicDirectoryEntry> findAllByBic(String bic);
+
+    List<BicDirectoryEntry> findAllByParticipantInfoPtType(String ptType);
+
+    List<BicDirectoryEntry> findAllByParticipantInfoNameP(String nameP);
+
     Optional<BicDirectoryEntry> findByBankMessageIdAndId(Long msgId, Long bicId);
 }

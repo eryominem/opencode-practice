@@ -16,9 +16,19 @@ public interface BankMessageRepository extends JpaRepository<BankMessage, Long> 
 
     List<BankMessage> findByDeletedFalse();
 
+    List<BankMessage> findByDeletedFalseAndTitleAndCreatedAtIsBefore(String title, LocalDate date);
+
+    List<BankMessage> findByDeletedFalseAndTitleAndCreatedAtIsAfter(String title, LocalDate date);
+
+    List<BankMessage> findByDeletedFalseAndTitleAndCreatedAtBetween(String title, LocalDate date1, LocalDate date2);
+
+    List<BankMessage> findByDeletedFalseAndCreatedAtIsAfter(LocalDate date);
+
+    List<BankMessage> findByDeletedFalseAndCreatedAtIsBefore(LocalDate date);
+
     List<BankMessage> findByDeletedFalseAndCreatedAtBetween(LocalDate date1, LocalDate date2);
 
-    List<BankMessage> findAllByTitle(String title);
+    List<BankMessage> findAllByDeletedFalseAndTitle(String title);
 
     @Transactional
     @Modifying

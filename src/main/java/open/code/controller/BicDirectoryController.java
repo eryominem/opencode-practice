@@ -1,8 +1,6 @@
 package open.code.controller;
 
 import open.code.dto.PayerDto;
-import open.code.dto.SWBICSDto;
-import open.code.model.SWBICS;
 import open.code.service.bnk_msg.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +17,15 @@ public class BicDirectoryController {
         this.bicDirectoryService = bicDirectoryService;
     }
 
+    @GetMapping("/filter")
+    public List<PayerDto> getPayersByFilter(@RequestParam(value = "bic", required = false) String bic,
+                                            @RequestParam(value = "nameP", required = false) String nameP,
+                                            @RequestParam(value = "ptType", required = false) String ptType) {
+        return bicDirectoryService.findAllPayersByFilter(bic, nameP, ptType);
+    }
+
     @GetMapping("/payers")
     public List<PayerDto> getPayers(@RequestParam("msgId") Long msgId, @RequestParam("bicId") Long bicId) {
         return bicDirectoryService.transformBicDirectoriesToPayers(msgId, bicId);
-    }
-
-    @GetMapping("/swbics")
-    public List<SWBICSDto> getSWBICS(@RequestParam("msgId") Long msgId, @RequestParam("bicId") Long bicId) {
-        return bicDirectoryService.transformSWBICSToDto(msgId, bicId);
     }
 }

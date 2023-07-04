@@ -4,6 +4,7 @@ import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.service.directory.DirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,8 @@ public class DirectoryController {
     }
 
     @PostMapping("/upload/{type}")
-    public ResponseEntity<Directory> add(@RequestBody DirectoryDto directoryDto,
+    @ResponseStatus(HttpStatus.CREATED)
+    public Directory add(@RequestBody DirectoryDto directoryDto,
                                          @PathVariable("type") String directoryType) {
         return directoryService.add(directoryDto, directoryType);
     }
@@ -36,12 +38,14 @@ public class DirectoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Directory> update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Directory update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
         return directoryService.update(id, directoryDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        return directoryService.deleteById(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id) {
+        directoryService.deleteById(id);
     }
 }

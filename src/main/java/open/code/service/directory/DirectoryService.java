@@ -31,11 +31,12 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     @Transactional
-    public ResponseEntity<Directory> add(DirectoryDto directoryDto, String directoryType) {
+    public Directory add(DirectoryDto directoryDto, String directoryType) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
-        Directory directory = Directory.builder()
+        Directory directory;
+        directoryRepository.save( directory = Directory.builder()
                 .code(directoryDto.getCode())
                 .name(directoryDto.getName())
                 .validityStart(directoryDto.getValidityStart())
@@ -43,10 +44,9 @@ public class DirectoryService implements DirectoryContract {
                 .directoryType(directoryType)
                 .createdBy(SecurityUtil.extractNameCurrentUser())
                 .updatedBy(SecurityUtil.extractNameCurrentUser())
-                .build();
-        directoryRepository.save(directory);
+                .build());
         log.info("Directory saved successfully");
-        return ResponseEntity.status(HttpStatus.CREATED).body(directory);
+        return directory;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     @Transactional
-    public ResponseEntity<Directory> update(Long id, DirectoryDto directoryDto) {
+    public Directory update(Long id, DirectoryDto directoryDto) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (directory.isDeleted()) {
@@ -68,9 +68,8 @@ public class DirectoryService implements DirectoryContract {
         }
 
         updateDirectory(directory, directoryDto);
-        directoryRepository.save(directory);
         log.info("Directory updated successfully");
-        return ResponseEntity.status(HttpStatus.OK).body(directory);
+        return directoryRepository.save(directory);
     }
 
     @Transactional
@@ -86,14 +85,13 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     @Transactional
-    public ResponseEntity<?> deleteById(Long id) {
+    public void deleteById(Long id) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new DirectoryNotFoundException("Directory not found"));
         directory.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         directory.setDeletedAt(LocalDateTime.now());
         directoryRepository.softDelete(id);
         log.info("Successful deletion");
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
     }
 
     @Transactional

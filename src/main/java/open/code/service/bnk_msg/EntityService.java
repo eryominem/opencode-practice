@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import open.code.dto.BankMessageDto;
 import open.code.mapper.BankMessageMapper;
 import open.code.model.*;
+import open.code.parser.CBRParser;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,26 @@ public class EntityService {
             log.info("File uploaded and entities saved successfully");
             return ResponseEntity.ok("File uploaded and entities saved successfully");
         } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+            log.error("Failed to process the uploaded file");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the uploaded file");
+        }
+    }
+
+    public ResponseEntity<?> saveEntitiesFromXml(File file) {
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(BankMessageDto.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            BankMessageDto bankMessageDto = (BankMessageDto) unmarshaller.unmarshal(file);
+
+            bankMessageDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
+            bankMessageDto.setFileName(file.getName());
+            bankMessageDto.setTitle(file.getName());
+            saveEntitiesFromXml(transformDtoToBankMessage(bankMessageDto));
+            log.info("File uploaded and entities saved successfully");
+            return ResponseEntity.ok("File uploaded and entities saved successfully");
+        } catch (JAXBException e) {
             e.printStackTrace();
             log.error("Failed to process the uploaded file");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process the uploaded file");

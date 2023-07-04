@@ -73,13 +73,15 @@ public class BankMessageService {
     }
 
     @Transactional
-    public ResponseEntity<?> deleteById(Long id) {
+    public BankMsgViewDto deleteById(Long id) {
         BankMessage bankMessage = bankMessageRepository.findById(id)
                 .orElseThrow(() -> new BankMessageNotFoundException("ED807 not found"));
-        log.info("BankMessage deleted successfully");
         bankMessage.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         bankMessageRepository.softDelete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successful deletion");
+        log.info("BankMessage deleted successfully");
+
+        BankMsgViewDto bankMsgViewDto = BankMsgViewDto.build(bankMessage);
+        return bankMsgViewDto;
     }
 
     private List<BankMsgViewDto> bankMessageToBankMsgViewDto(List<BankMessage> bankMessages) {

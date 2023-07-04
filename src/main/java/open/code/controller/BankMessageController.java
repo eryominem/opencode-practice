@@ -1,5 +1,6 @@
 package open.code.controller;
 
+import open.code.dto.BankMessageFilterDto;
 import open.code.dto.BankMsgViewDto;
 import open.code.service.bnk_msg.BankMessageService;
 import open.code.service.bnk_msg.EntityService;
@@ -24,10 +25,8 @@ public class BankMessageController {
     }
 
     @GetMapping(value = "/filter")
-    public List<BankMsgViewDto> messageFilter(@RequestParam(value = "title", required = false) String title,
-                                           @RequestParam(value = "date1", required = false) Optional<LocalDate> date1,
-                                           @RequestParam(value = "date2", required = false) Optional<LocalDate> date2) {
-        return bankMessageService.findBankMessageByFilter(title, date1, date2);
+    public List<BankMsgViewDto> messageFilter(@RequestBody BankMessageFilterDto bankMessageFilterDto) {
+        return bankMessageService.findBankMessageByFilter(bankMessageFilterDto);
     }
 
     @PostMapping("/upload")

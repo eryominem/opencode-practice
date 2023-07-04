@@ -1,5 +1,6 @@
 package open.code.controller;
 
+import open.code.dto.BicDirectoryFilterDto;
 import open.code.dto.PayerDto;
 import open.code.service.bnk_msg.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,8 @@ public class BicDirectoryController {
     }
 
     @GetMapping("/filter")
-    public List<PayerDto> getPayersByFilter(@RequestParam(value = "bic", required = false) String bic,
-                                            @RequestParam(value = "nameP", required = false) String nameP,
-                                            @RequestParam(value = "ptType", required = false) String ptType,
-                                            @RequestParam(value = "msgId") Long msgId) {
-        return bicDirectoryService.findAllPayersByFilter(bic, nameP, ptType, msgId);
+    public List<PayerDto> getPayersByFilter(@RequestBody BicDirectoryFilterDto bicDirectoryFilterDto) {
+        return bicDirectoryService.findAllPayersByFilter(bicDirectoryFilterDto);
     }
 
     @GetMapping("/count")

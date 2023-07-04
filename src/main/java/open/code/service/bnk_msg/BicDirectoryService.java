@@ -1,6 +1,7 @@
 package open.code.service.bnk_msg;
 
 import lombok.extern.log4j.Log4j2;
+import open.code.dto.BicDirectoryFilterDto;
 import open.code.dto.PayerDto;
 import open.code.dto.SWBICSDto;
 import open.code.exception.bic_exception.BicEntryNotFoundException;
@@ -42,22 +43,28 @@ public class BicDirectoryService {
         return bicDirectoryEntryRepository.count(msgId);
     }
 
-    public List<PayerDto> findAllPayersByFilter(String bic, String nameP, String ptType, Long id) {
-        if (bic != null) {
-            if (nameP != null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bic, nameP, ptType, id));
-            else if (nameP != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndBankMessageId(bic, nameP, id));
-            else if (ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtTypeAndBankMessageId(bic, ptType, id));
-            else return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bic, id));
+    public List<PayerDto> findAllPayersByFilter(BicDirectoryFilterDto bicDirectoryFilterDto) {
+        if (bicDirectoryFilterDto.getBic() != null) {
+            if (bicDirectoryFilterDto.getNameP() != null && bicDirectoryFilterDto.getPtType() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getBic(),
+                        bicDirectoryFilterDto.getNameP(), bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
+            else if (bicDirectoryFilterDto.getNameP() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndBankMessageId(bicDirectoryFilterDto.getBic(),
+                        bicDirectoryFilterDto.getNameP(), bicDirectoryFilterDto.getMsgId()));
+            else if (bicDirectoryFilterDto.getPtType() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getBic(),
+                        bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
+            else return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bicDirectoryFilterDto.getBic(), bicDirectoryFilterDto.getMsgId()));
         } else {
-            if (nameP != null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(nameP, ptType, id));
-            if (nameP == null && ptType != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoPtTypeAndBankMessageId(ptType, id));
-            if (nameP != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndBankMessageId(nameP, id));
+            if (bicDirectoryFilterDto.getNameP() != null && bicDirectoryFilterDto.getPtType() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getNameP(),
+                        bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
+            if (bicDirectoryFilterDto.getNameP() == null && bicDirectoryFilterDto.getPtType() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getPtType(),
+                        bicDirectoryFilterDto.getMsgId()));
+            if (bicDirectoryFilterDto.getNameP() != null)
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndBankMessageId(bicDirectoryFilterDto.getNameP(),
+                        bicDirectoryFilterDto.getMsgId()));
             else
                 throw new BicEntryNotFoundException("Not found");
         }

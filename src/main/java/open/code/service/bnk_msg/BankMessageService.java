@@ -2,6 +2,7 @@ package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import open.code.dto.BankMessageFilterDto;
 import open.code.dto.BankMsgViewDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.model.BankMessage;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -34,25 +34,27 @@ public class BankMessageService {
         return bankMessageToBankMsgViewDto(bankMessages);
     }
 
-    public List<BankMsgViewDto> findBankMessageByFilter(String title, Optional<LocalDate> date1, Optional<LocalDate> date2) {
-        LocalDate localDate1 = date1.orElseGet(LocalDate::now);
-        LocalDate localDate2 = date2.orElseGet(LocalDate::now);
-        if (title != null) {
-            if (date1.isPresent() && date2.isPresent()) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtBetween(title, localDate1, localDate2));
-            } else if (date1.isPresent()) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsAfter(title, localDate1));
-            } else if (date2.isPresent()) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsBefore(title, localDate2));
+    public List<BankMsgViewDto> findBankMessageByFilter(BankMessageFilterDto bankMessageFilterDto) {
+        System.out.println(bankMessageFilterDto);
+        LocalDate localDate1 = bankMessageFilterDto.getDate1() == null ? LocalDate.now() : bankMessageFilterDto.getDate1();
+        LocalDate localDate2 = bankMessageFilterDto.getDate2() == null ? LocalDate.now() : bankMessageFilterDto.getDate2();
+        if (bankMessageFilterDto.getTitle() != null) {
+            if (bankMessageFilterDto.getDate1() != null && bankMessageFilterDto.getDate2() != null) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtBetween(bankMessageFilterDto.getTitle(),
+                        localDate1, localDate2));
+            } else if (bankMessageFilterDto.getDate1() != null) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsAfter(bankMessageFilterDto.getTitle(), localDate1));
+            } else if (bankMessageFilterDto.getDate2() != null) {
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsBefore(bankMessageFilterDto.getTitle(), localDate2));
             } else {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findAllByDeletedFalseAndTitle(title));
+                return bankMessageToBankMsgViewDto(bankMessageRepository.findAllByDeletedFalseAndTitle(bankMessageFilterDto.getTitle()));
             }
         } else {
-            if (date1.isPresent() && date2.isPresent()) {
+            if (bankMessageFilterDto.getDate1() != null && bankMessageFilterDto.getDate2() != null) {
                 return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtBetween(localDate1, localDate2));
-            } else if (date1.isEmpty() && date2.isPresent()) {
+            } else if (bankMessageFilterDto.getDate1() == null && bankMessageFilterDto.getDate2() != null) {
                 return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsBefore(localDate2));
-            } else if (date1.isPresent()) {
+            } else if (bankMessageFilterDto.getDate1() != null) {
                 return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsAfter(localDate1));
             } else {
                 throw new BankMessageNotFoundException("BankMessage not found");

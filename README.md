@@ -11,7 +11,7 @@
 ### Стэк проекта:  
 1. Backend: [Spring Boot](https://spring.io/projects/spring-boot), [Spring MVC](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html), [Spring Data](https://spring.io/projects/spring-data-jpa), [Spring Secuity](https://spring.io/projects/spring-security), [Docker](https://www.docker.com/).  
 2. База данных: [H2 Database](https://www.h2database.com/html/main.html).  
-3. Frontend: HTML, [SCSS](https://sass-lang.com/), [Bootstrap](https://getbootstrap.com/), JavaScript, [JQuery](https://jquery.com/), [React](https://react.dev/).   
+3. Frontend: HTML, [SCSS](https://sass-lang.com/), [Bootstrap](https://getbootstrap.com/), JavaScript, [React](https://react.dev/).   
 4. Взаимодействие между backend и frontend осуществляется посредством JSON, REST.  
 5. Для описания API используются [Swagger](https://swagger.io/tools/swagger-ui/).  
 

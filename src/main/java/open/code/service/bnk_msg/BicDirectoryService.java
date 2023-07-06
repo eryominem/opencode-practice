@@ -3,9 +3,7 @@ package open.code.service.bnk_msg;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.BicDirectoryFilterDto;
 import open.code.dto.PayerDto;
-import open.code.dto.SWBICSDto;
 import open.code.exception.bic_exception.BicEntryNotFoundException;
-import open.code.mapper.SWBICSMapper;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class BicDirectoryService {
     private final BicDirectoryEntryRepository bicDirectoryEntryRepository;
-    private final SWBICSMapper swbicsMapper;
 
     @Autowired
-    public BicDirectoryService(BicDirectoryEntryRepository bicDirectoryEntryRepository,
-                               SWBICSMapper swbicsMapper) {
+    public BicDirectoryService(BicDirectoryEntryRepository bicDirectoryEntryRepository) {
         this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
-        this.swbicsMapper = swbicsMapper;
     }
-
 
     /**
      * Return all payers from a specific file
@@ -54,7 +48,8 @@ public class BicDirectoryService {
             else if (bicDirectoryFilterDto.getPtType() != null)
                 return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getBic(),
                         bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
-            else return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bicDirectoryFilterDto.getBic(), bicDirectoryFilterDto.getMsgId()));
+            else
+                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bicDirectoryFilterDto.getBic(), bicDirectoryFilterDto.getMsgId()));
         } else {
             if (bicDirectoryFilterDto.getNameP() != null && bicDirectoryFilterDto.getPtType() != null)
                 return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getNameP(),
@@ -74,5 +69,4 @@ public class BicDirectoryService {
         return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
                 .collect(Collectors.toList());
     }
-
 }

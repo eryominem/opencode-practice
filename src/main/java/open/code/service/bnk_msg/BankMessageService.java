@@ -79,7 +79,6 @@ public class BankMessageService {
         bankMessage.setDeletedBy(SecurityUtil.extractNameCurrentUser());
         bankMessageRepository.softDelete(id);
         log.info("BankMessage deleted successfully");
-
         BankMsgViewDto bankMsgViewDto = BankMsgViewDto.build(bankMessage);
         return bankMsgViewDto;
     }

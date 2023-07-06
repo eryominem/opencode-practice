@@ -66,12 +66,10 @@ public class EntityService {
     }
 
     public ResponseEntity<?> saveEntitiesFromXml(File file) {
-
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(BankMessageDto.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             BankMessageDto bankMessageDto = (BankMessageDto) unmarshaller.unmarshal(file);
-
             bankMessageDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
             bankMessageDto.setFileName(file.getName());
             bankMessageDto.setTitle(file.getName());

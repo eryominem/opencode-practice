@@ -10,8 +10,8 @@ import open.code.repository.DirectoryRepository;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,7 +36,7 @@ public class DirectoryService implements DirectoryContract {
             throw new DirectoryTypeException("Directory type is not present");
         }
         Directory directory;
-        directoryRepository.save( directory = Directory.builder()
+        directoryRepository.save(directory = Directory.builder()
                 .code(directoryDto.getCode())
                 .name(directoryDto.getName())
                 .validityStart(directoryDto.getValidityStart())
@@ -59,14 +59,12 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
-    @Transactional
     public Directory update(Long id, DirectoryDto directoryDto) {
         Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (directory.isDeleted()) {
             throw new DirectoryNotFoundException("Directory has been deleted");
         }
-
         updateDirectory(directory, directoryDto);
         log.info("Directory updated successfully");
         return directoryRepository.save(directory);
@@ -95,7 +93,7 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Transactional
-    private void updateDirectory(Directory directory, DirectoryDto directoryDto) {
+    public void updateDirectory(Directory directory, DirectoryDto directoryDto) {
         if (directoryDto.getCode() != null)
             directory.setCode(directoryDto.getCode());
         if (directoryDto.getName() != null)
@@ -104,7 +102,6 @@ public class DirectoryService implements DirectoryContract {
             directory.setValidityStart(directoryDto.getValidityStart());
         if (directoryDto.getValidityEnd() != null)
             directory.setValidityEnd(directoryDto.getValidityEnd());
-
         directory.setUpdatedBy(SecurityUtil.extractNameCurrentUser());
     }
 

@@ -20,7 +20,7 @@ public class DirectoryController {
         this.directoryService = directoryService;
     }
 
-    @PostMapping("/upload/{type}")
+    @PostMapping("/add/{type}")
     @ResponseStatus(HttpStatus.CREATED)
     public Directory add(@RequestBody DirectoryDto directoryDto,
                                          @PathVariable("type") String directoryType) {

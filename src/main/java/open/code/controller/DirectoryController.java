@@ -3,6 +3,7 @@ package open.code.controller;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.service.directory.DirectoryService;
+import open.code.util.DirectoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class DirectoryController {
     @GetMapping("/{type}")
     public List<Directory> getAll(@PathVariable("type") String directoryType, @RequestParam("dicId") Long dicId) {
         return directoryService.getAll(directoryType, dicId);
+    }
+
+    @GetMapping
+    public List<DirectoryType> getAllDirectoryTypes() {
+        return directoryService.getDirectoryTypes();
     }
 
     @PatchMapping("/{id}")

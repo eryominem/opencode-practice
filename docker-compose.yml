@@ -1,12 +1,25 @@
 version: '2.1'
 services:
   backend:
-    image: cherdak163/opencode:latest
+    build:
+      dockerfile: ./Dockerfile
+    container_name: backend-container
     ports:
       - "9090:9090"
+    networks:
+      app-network:
+        - aliases:
+            - "backend"
 
-#  frontend:
-#    image:
-#    ports:
-#    depends_on:
-#      -
+
+  frontend:
+    image: solituude/opencode-front:latest
+    container_name: frontend-container
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -24,13 +24,16 @@ public class DirectoryController {
     @PostMapping("/add/{type}")
     @ResponseStatus(HttpStatus.CREATED)
     public Directory add(@RequestBody DirectoryDto directoryDto,
-                                         @PathVariable("type") String directoryType) {
-        return directoryService.add(directoryDto, directoryType);
+                         @PathVariable("type") String directoryType,
+                         @RequestParam Long msgId) {
+        return directoryService.add(directoryDto, directoryType, msgId);
     }
 
     @GetMapping("/{type}")
-    public List<Directory> getAll(@PathVariable("type") String directoryType, @RequestParam("dicId") Long dicId) {
-        return directoryService.getAll(directoryType, dicId);
+    public List<Directory> getAll(@PathVariable("type") String directoryType,
+                                  @RequestParam("dicId") Long dicId,
+                                  @RequestParam("msgId") Long msgId) {
+        return directoryService.getAll(directoryType, dicId, msgId);
     }
 
     @GetMapping
@@ -45,7 +48,8 @@ public class DirectoryController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Directory update(@PathVariable("id") Long id, @RequestBody DirectoryDto directoryDto) {
+    public Directory update(@PathVariable("id") Long id,
+                            @RequestBody DirectoryDto directoryDto) {
         return directoryService.update(id, directoryDto);
     }
 

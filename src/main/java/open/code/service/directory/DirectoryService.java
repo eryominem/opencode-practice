@@ -2,15 +2,16 @@ package open.code.service.directory;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.exception.directory_exception.DirectoryNotFoundException;
 import open.code.exception.directory_exception.DirectoryTypeException;
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.repository.DirectoryRepository;
+import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,14 +25,17 @@ import java.util.List;
 public class DirectoryService implements DirectoryContract {
     private final DirectoryRepository directoryRepository;
 
+    private final BankMessageRepository bankMessageRepository;
+
     @Autowired
-    public DirectoryService(DirectoryRepository directoryRepository) {
+    public DirectoryService(DirectoryRepository directoryRepository, BankMessageRepository bankMessageRepository) {
         this.directoryRepository = directoryRepository;
+        this.bankMessageRepository = bankMessageRepository;
     }
 
     @Override
     @Transactional
-    public Directory add(DirectoryDto directoryDto, String directoryType) {
+    public Directory add(DirectoryDto directoryDto, String directoryType, Long msgId) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
@@ -44,18 +48,20 @@ public class DirectoryService implements DirectoryContract {
                 .directoryType(directoryType)
                 .createdBy(SecurityUtil.extractNameCurrentUser())
                 .updatedBy(SecurityUtil.extractNameCurrentUser())
+                .bankMessage(bankMessageRepository.findById(msgId)
+                        .orElseThrow(() -> new BankMessageNotFoundException("BankMessage not found")))
                 .build());
         log.info("Directory saved successfully");
         return directory;
     }
 
     @Override
-    public List<Directory> getAll(String directoryType, Long dicId) {
+    public List<Directory> getAll(String directoryType, Long dicId, Long msgId) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
         log.info("Directory successfully returned");
-        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType, dicId);
+        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType, dicId, msgId);
     }
 
     @Override

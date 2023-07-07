@@ -108,4 +108,9 @@ public class DirectoryService implements DirectoryContract {
     private boolean checkDirectoryType(String directoryType) {
         return Arrays.stream(DirectoryType.values()).noneMatch(x -> x.getVal().equals(directoryType));
     }
+
+    public List<DirectoryType> getDirectoryTypes() {
+        return Arrays.stream(DirectoryType.values()).toList();
+    }
+
 }

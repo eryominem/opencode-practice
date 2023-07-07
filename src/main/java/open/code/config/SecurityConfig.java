@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui.html")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/v3/api-docs")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/ed807/**")).hasRole("ADMIN")
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/directories/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()

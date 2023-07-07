@@ -27,11 +27,11 @@ public class BicDirectoryService {
     /**
      * Return all payers from a specific file
      */
-    public List<PayerDto> transformBicDirectoriesToPayers(Long msgId, int page) {
-        Page<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAllByBankMessageId(msgId, PageRequest.of(page, 25));
+    public Page<PayerDto> transformBicDirectoriesToPayers(Long msgId, int page) {
+        Page<PayerDto> payerDtos = bicDirectoryEntryRepository.findAllByBankMessageId(msgId, PageRequest.of(page, 25))
+                .map((x) -> new PayerDto(x, x.getParticipantInfo()));
         log.info("Payers returned successfully");
-        return bicDirectoryEntries.getContent().stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
-                .collect(Collectors.toList());
+        return payerDtos;
     }
 
     public long countAll(Long msgId) {

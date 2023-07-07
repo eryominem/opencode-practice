@@ -4,6 +4,7 @@ import open.code.dto.BicDirectoryFilterDto;
 import open.code.dto.PayerDto;
 import open.code.service.bnk_msg.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class BicDirectoryController {
     }
 
     @GetMapping("/payers")
-    public List<PayerDto> getPayers(@RequestParam("msgId") Long msgId,
+    public Page<PayerDto> getPayers(@RequestParam("msgId") Long msgId,
                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
         return bicDirectoryService.transformBicDirectoriesToPayers(msgId, page);
     }

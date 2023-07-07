@@ -23,7 +23,7 @@ public class BicDirectoryController {
         return bicDirectoryService.transformBicDirectoriesToPayers(msgId, bicId);
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public List<PayerDto> getPayersByFilter(@RequestBody BicDirectoryFilterDto bicDirectoryFilterDto) {
         return bicDirectoryService.findAllPayersByFilter(bicDirectoryFilterDto);
     }

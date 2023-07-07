@@ -26,7 +26,7 @@ public class BankMessageController {
         this.cbrParser = cbrParser;
     }
 
-    @GetMapping(value = "/filter")
+    @PostMapping(value = "/filter")
     public List<BankMsgViewDto> messageFilter(@RequestBody BankMessageFilterDto bankMessageFilterDto) {
         return bankMessageService.findBankMessageByFilter(bankMessageFilterDto);
     }

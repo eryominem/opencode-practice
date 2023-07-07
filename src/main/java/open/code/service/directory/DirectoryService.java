@@ -12,6 +12,8 @@ import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,12 +58,12 @@ public class DirectoryService implements DirectoryContract {
     }
 
     @Override
-    public List<Directory> getAll(String directoryType, Long dicId, Long msgId) {
+    public Page<Directory> getAll(String directoryType, int page, Long msgId) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
         log.info("Directory successfully returned");
-        return directoryRepository.findByDirectoryTypeAndDeletedFalse(directoryType, dicId, msgId);
+        return directoryRepository.findAllByDirectoryTypeAndDeletedFalseAndBankMessageId(directoryType, msgId, PageRequest.of(page, 25));
     }
 
     @Override

@@ -19,8 +19,9 @@ public class BicDirectoryController {
     }
 
     @GetMapping("/payers")
-    public List<PayerDto> getPayers(@RequestParam("msgId") Long msgId, @RequestParam("bicId") Long bicId) {
-        return bicDirectoryService.transformBicDirectoriesToPayers(msgId, bicId);
+    public List<PayerDto> getPayers(@RequestParam("msgId") Long msgId,
+                                    @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return bicDirectoryService.transformBicDirectoriesToPayers(msgId, page);
     }
 
     @PostMapping("/filter")

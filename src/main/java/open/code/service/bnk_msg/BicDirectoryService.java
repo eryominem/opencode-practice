@@ -7,6 +7,8 @@ import open.code.exception.bic_exception.BicEntryNotFoundException;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +27,16 @@ public class BicDirectoryService {
     /**
      * Return all payers from a specific file
      */
-    public List<PayerDto> transformBicDirectoriesToPayers(Long msgId, Long bicId) {
-        List<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAll(msgId, bicId);
+    public List<PayerDto> transformBicDirectoriesToPayers(Long msgId, int page) {
+        Page<BicDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryRepository.findAllByBankMessageId(msgId, PageRequest.of(page, 25));
         log.info("Payers returned successfully");
-        return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
+        return bicDirectoryEntries.getContent().stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
                 .collect(Collectors.toList());
     }
 
     public long countAll(Long msgId) {
         log.info("Returned count of BIC entries");
-        return bicDirectoryEntryRepository.count(msgId);
+        return bicDirectoryEntryRepository.countByBankMessageId(msgId);
     }
 
     public List<PayerDto> findAllPayersByFilter(BicDirectoryFilterDto bicDirectoryFilterDto) {

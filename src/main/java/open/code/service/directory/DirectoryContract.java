@@ -2,14 +2,12 @@ package open.code.service.directory;
 
 import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface DirectoryContract {
     Directory add(DirectoryDto directoryDto, String directoryType, Long msgId);
 
-    List<Directory> getAll(String directoryType, Long dicId, Long msgId);
+    Page<Directory> getAll(String directoryType, int page, Long msgId);
 
     Directory update(Long id, DirectoryDto directoryDto);
 

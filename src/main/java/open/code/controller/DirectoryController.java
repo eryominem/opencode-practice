@@ -5,6 +5,7 @@ import open.code.dto.DirectoryDto;
 import open.code.service.directory.DirectoryService;
 import open.code.util.DirectoryType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,10 @@ public class DirectoryController {
     }
 
     @GetMapping("/{type}")
-    public List<Directory> getAll(@PathVariable("type") String directoryType,
-                                  @RequestParam("dicId") Long dicId,
+    public Page<Directory> getAll(@PathVariable("type") String directoryType,
+                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                   @RequestParam("msgId") Long msgId) {
-        return directoryService.getAll(directoryType, dicId, msgId);
+        return directoryService.getAll(directoryType, page, msgId);
     }
 
     @GetMapping

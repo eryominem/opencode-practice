@@ -6,6 +6,7 @@ import open.code.dto.PayerDto;
 import open.code.exception.bic_exception.BicEntryNotFoundException;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
+import open.code.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +29,7 @@ public class BicDirectoryService {
      * Return all payers from a specific file
      */
     public Page<PayerDto> transformBicDirectoriesToPayers(Long msgId, int page) {
-        Page<PayerDto> payerDtos = bicDirectoryEntryRepository.findAllByBankMessageId(msgId, PageRequest.of(page, 25))
+        Page<PayerDto> payerDtos = bicDirectoryEntryRepository.findAllByBankMessageId(msgId, PageRequest.of(page, Constants.PAGE_SIZE))
                 .map((x) -> new PayerDto(x, x.getParticipantInfo()));
         log.info("Payers returned successfully");
         return payerDtos;

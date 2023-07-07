@@ -9,6 +9,7 @@ import open.code.model.Directory;
 import open.code.dto.DirectoryDto;
 import open.code.repository.DirectoryRepository;
 import open.code.repository.bnk_msg.BankMessageRepository;
+import open.code.util.Constants;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,9 @@ public class DirectoryService implements DirectoryContract {
             throw new DirectoryTypeException("Directory type is not present");
         }
         log.info("Directory successfully returned");
-        return directoryRepository.findAllByDirectoryTypeAndDeletedFalseAndBankMessageId(directoryType, msgId, PageRequest.of(page, 25));
+        return directoryRepository
+                .findAllByDirectoryTypeAndDeletedFalseAndBankMessageId(directoryType, msgId,
+                        PageRequest.of(page, Constants.PAGE_SIZE));
     }
 
     @Override

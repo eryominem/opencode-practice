@@ -66,4 +66,7 @@ public class BankMessage {
 
     @OneToMany(mappedBy = "bankMessage", cascade = CascadeType.ALL)
     private List<BicDirectoryEntry> bicDirectoryEntries;
+
+    @OneToOne(mappedBy = "bankMessage", cascade = CascadeType.ALL)
+    private Directory directory;
 }

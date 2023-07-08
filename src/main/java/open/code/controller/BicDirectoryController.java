@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/bics")
 public class BicDirectoryController {
@@ -26,8 +24,9 @@ public class BicDirectoryController {
     }
 
     @PostMapping("/filter")
-    public List<PayerDto> getPayersByFilter(@RequestBody BicDirectoryFilterDto bicDirectoryFilterDto) {
-        return bicDirectoryService.findAllPayersByFilter(bicDirectoryFilterDto);
+    public Page<PayerDto> getPayersByFilter(@RequestBody BicDirectoryFilterDto bicDirectoryFilterDto,
+                                            @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return bicDirectoryService.findAllPayersByFilter(bicDirectoryFilterDto, page);
     }
 
     @GetMapping("/count")

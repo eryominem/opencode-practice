@@ -4,12 +4,13 @@ import open.code.model.BicDirectoryEntry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface BicDirectoryEntryRepository extends JpaRepository<BicDirectoryEntry, Long> {
+public interface BicDirectoryEntryRepository extends JpaRepository<BicDirectoryEntry, Long>, JpaSpecificationExecutor<BicDirectoryEntry> {
     long countByBankMessageId(Long msgId);
 
     Page<BicDirectoryEntry> findAllByBankMessageId(Long msgId, PageRequest pageRequest);

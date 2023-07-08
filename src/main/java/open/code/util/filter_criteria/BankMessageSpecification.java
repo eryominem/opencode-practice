@@ -31,6 +31,9 @@ public class BankMessageSpecification implements Specification<BankMessage> {
         if (criteria.getTitle() != null) {
             predicates.add(criteriaBuilder.like(root.get("title"), "%" + criteria.getTitle() + "%"));
         }
+        if (criteria.getDeleted() != null) {
+            predicates.add(criteriaBuilder.equal(root.get("deleted"), criteria.getDeleted()));
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

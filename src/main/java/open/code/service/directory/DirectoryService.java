@@ -83,12 +83,17 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     public Page<Directory> getAllByFilter(String directoryType, DirectoryFilterDto directoryFilterDto, int page) {
+        if (checkDirectoryType(directoryType)) {
+            throw new DirectoryTypeException("Directory type is not present");
+        }
+
         if (directoryFilterDto == null) {
             throw new DirectoryNotFoundException("Not found");
         }
+
         Specification<Directory> specification = new DirectorySpecification(directoryFilterDto, directoryType);
-        return directoryRepository.findAll(specification, PageRequest.of(page,Constants.PAGE_SIZE));
-        //List<Directory> directories = directoryRepository.findBy()
+        return directoryRepository.findAll(Specification.where(coincidenceType(directoryType)).and(specification),
+                PageRequest.of(page, Constants.PAGE_SIZE));
     }
 
     @Override
@@ -146,4 +151,7 @@ public class DirectoryService implements DirectoryContract {
         return Arrays.stream(DirectoryType.values()).toList();
     }
 
+    private Specification<Directory> coincidenceType(String directoryType) {
+        return (directory, cq, cb) -> cb.equal(directory.get("directoryType"), directoryType);
+    }
 }

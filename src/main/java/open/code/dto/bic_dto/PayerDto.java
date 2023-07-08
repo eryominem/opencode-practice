@@ -1,4 +1,4 @@
-package open.code.dto;
+package open.code.dto.bic_dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

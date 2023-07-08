@@ -1,7 +1,10 @@
-package open.code.dto;
+package open.code.dto.bic_dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import open.code.dto.AccountDto;
+import open.code.dto.ParticipantInfoDto;
+import open.code.dto.SWBICSDto;
 import open.code.enums.ChangeType;
 
 import javax.xml.bind.annotation.*;

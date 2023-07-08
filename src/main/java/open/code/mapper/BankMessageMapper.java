@@ -1,7 +1,7 @@
 package open.code.mapper;
 
-import open.code.dto.BankMessageDto;
-import open.code.dto.BicDirectoryEntryDto;
+import open.code.dto.ed807_dto.BankMessageDto;
+import open.code.dto.bic_dto.BicDirectoryEntryDto;
 import open.code.model.BankMessage;
 import open.code.model.BicDirectoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;

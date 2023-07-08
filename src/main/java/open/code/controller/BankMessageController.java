@@ -1,7 +1,7 @@
 package open.code.controller;
 
-import open.code.dto.BankMessageFilterDto;
-import open.code.dto.BankMsgViewDto;
+import open.code.dto.ed807_dto.BankMessageFilterDto;
+import open.code.dto.ed807_dto.BankMsgViewDto;
 import open.code.parser.CBRParser;
 import open.code.service.bnk_msg.BankMessageService;
 import open.code.service.bnk_msg.EntityService;

@@ -1,4 +1,4 @@
-package open.code.dto;
+package open.code.dto.ed807_dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

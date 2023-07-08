@@ -52,8 +52,4 @@ public class Directory {
 
     @JsonIgnore
     private boolean deleted;
-
-    @JsonIgnore
-    @OneToOne
-    private BankMessage bankMessage;
 }

@@ -2,19 +2,22 @@ package open.code.service.directory;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import open.code.dto.directory_dto.DirectoryFilterDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.exception.directory_exception.DirectoryNotFoundException;
 import open.code.exception.directory_exception.DirectoryTypeException;
 import open.code.model.Directory;
-import open.code.dto.DirectoryDto;
+import open.code.dto.directory_dto.DirectoryDto;
 import open.code.repository.DirectoryRepository;
 import open.code.repository.bnk_msg.BankMessageRepository;
 import open.code.util.Constants;
 import open.code.util.DirectoryType;
 import open.code.util.SecurityUtil;
+import open.code.util.filter_criteria.DirectorySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,7 +41,7 @@ public class DirectoryService implements DirectoryContract {
 
     @Override
     @Transactional
-    public Directory add(DirectoryDto directoryDto, String directoryType, Long msgId) {
+    public Directory add(DirectoryDto directoryDto, String directoryType) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
@@ -51,22 +54,41 @@ public class DirectoryService implements DirectoryContract {
                 .directoryType(directoryType)
                 .createdBy(SecurityUtil.extractNameCurrentUser())
                 .updatedBy(SecurityUtil.extractNameCurrentUser())
-                .bankMessage(bankMessageRepository.findById(msgId)
-                        .orElseThrow(() -> new BankMessageNotFoundException("BankMessage not found")))
                 .build());
         log.info("Directory saved successfully");
         return directory;
     }
 
     @Override
-    public Page<Directory> getAll(String directoryType, int page, Long msgId) {
+    public Page<Directory> getAll(String directoryType, int page) {
         if (checkDirectoryType(directoryType)) {
             throw new DirectoryTypeException("Directory type is not present");
         }
         log.info("Directory successfully returned");
-        return directoryRepository
-                .findAllByDirectoryTypeAndDeletedFalseAndBankMessageId(directoryType, msgId,
-                        PageRequest.of(page, Constants.PAGE_SIZE));
+        return directoryRepository.findAllByDirectoryTypeAndDeletedIsFalse(
+                directoryType,
+                PageRequest.of(page, Constants.PAGE_SIZE));
+    }
+
+    @Override
+    public Page<Directory> getAllDeleted(String directoryType, int page) {
+        if (checkDirectoryType(directoryType)) {
+            throw new DirectoryTypeException("Directory type is not present");
+        }
+        log.info("Directory successfully returned");
+        return directoryRepository.findAllByDirectoryTypeAndDeletedIsTrue(
+                directoryType,
+                PageRequest.of(page, Constants.PAGE_SIZE));
+    }
+
+    @Override
+    public Page<Directory> getAllByFilter(String directoryType, DirectoryFilterDto directoryFilterDto, int page) {
+        if (directoryFilterDto == null) {
+            throw new DirectoryNotFoundException("Not found");
+        }
+        Specification<Directory> specification = new DirectorySpecification(directoryFilterDto, directoryType);
+        return directoryRepository.findAll(specification, PageRequest.of(page,Constants.PAGE_SIZE));
+        //List<Directory> directories = directoryRepository.findBy()
     }
 
     @Override

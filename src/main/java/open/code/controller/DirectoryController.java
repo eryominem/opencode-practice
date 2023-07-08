@@ -1,13 +1,13 @@
 package open.code.controller;
 
+import open.code.dto.directory_dto.DirectoryFilterDto;
 import open.code.model.Directory;
-import open.code.dto.DirectoryDto;
+import open.code.dto.directory_dto.DirectoryDto;
 import open.code.service.directory.DirectoryService;
 import open.code.util.DirectoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,14 +27,26 @@ public class DirectoryController {
     public Directory add(@RequestBody DirectoryDto directoryDto,
                          @PathVariable("type") String directoryType,
                          @RequestParam Long msgId) {
-        return directoryService.add(directoryDto, directoryType, msgId);
+        return directoryService.add(directoryDto, directoryType);
     }
 
     @GetMapping("/{type}")
     public Page<Directory> getAll(@PathVariable("type") String directoryType,
-                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                  @RequestParam("msgId") Long msgId) {
-        return directoryService.getAll(directoryType, page, msgId);
+                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return directoryService.getAll(directoryType, page);
+    }
+
+    @GetMapping("/deleted/{type}")
+    public Page<Directory> getAllDeleted(@PathVariable("type") String directoryType,
+                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return directoryService.getAllDeleted(directoryType, page);
+    }
+
+    @GetMapping("/filter/{type}")
+    public Page<Directory> getByFilter(@PathVariable("type") String directoryType,
+                                       @RequestBody DirectoryFilterDto directoryFilterDto,
+                                       @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return directoryService.getAllByFilter(directoryType, directoryFilterDto, page);
     }
 
     @GetMapping

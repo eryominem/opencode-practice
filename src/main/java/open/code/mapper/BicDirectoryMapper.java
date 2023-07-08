@@ -1,6 +1,7 @@
 package open.code.mapper;
 
 import open.code.dto.*;
+import open.code.dto.bic_dto.BicDirectoryEntryDto;
 import open.code.model.*;
 import org.springframework.stereotype.Component;
 

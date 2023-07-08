@@ -1,9 +1,8 @@
-package open.code.dto;
+package open.code.dto.ed807_dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import open.code.model.BankMessage;
 
 import java.time.LocalDate;

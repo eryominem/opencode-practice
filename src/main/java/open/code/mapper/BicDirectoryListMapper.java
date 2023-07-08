@@ -1,6 +1,6 @@
 package open.code.mapper;
 
-import open.code.dto.BicDirectoryEntryDto;
+import open.code.dto.bic_dto.BicDirectoryEntryDto;
 import open.code.model.BicDirectoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

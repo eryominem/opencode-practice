@@ -1,7 +1,7 @@
 package open.code.controller;
 
-import open.code.dto.BicDirectoryFilterDto;
-import open.code.dto.PayerDto;
+import open.code.dto.bic_dto.BicDirectoryFilterDto;
+import open.code.dto.bic_dto.PayerDto;
 import open.code.service.bnk_msg.BicDirectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

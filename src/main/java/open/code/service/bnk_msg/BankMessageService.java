@@ -2,8 +2,8 @@ package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
-import open.code.dto.BankMessageFilterDto;
-import open.code.dto.BankMsgViewDto;
+import open.code.dto.ed807_dto.BankMessageFilterDto;
+import open.code.dto.ed807_dto.BankMsgViewDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.model.BankMessage;
 import open.code.repository.bnk_msg.BankMessageRepository;

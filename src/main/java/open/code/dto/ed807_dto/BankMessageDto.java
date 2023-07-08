@@ -1,4 +1,4 @@
-package open.code.dto;
+package open.code.dto.ed807_dto;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -8,9 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import open.code.adapter.LocalDateAdapter;
 import open.code.adapter.LocalDateTimeAdapter;
+import open.code.dto.bic_dto.BicDirectoryEntryDto;
 import open.code.enums.ReasonCodeType;
 import open.code.enums.RequestCodeType;
-import org.hibernate.validator.constraints.Length;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

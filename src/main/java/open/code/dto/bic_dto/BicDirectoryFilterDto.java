@@ -1,4 +1,4 @@
-package open.code.dto;
+package open.code.dto.bic_dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

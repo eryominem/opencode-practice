@@ -1,8 +1,8 @@
 package open.code.service.bnk_msg;
 
 import lombok.extern.log4j.Log4j2;
-import open.code.dto.BicDirectoryFilterDto;
-import open.code.dto.PayerDto;
+import open.code.dto.bic_dto.BicDirectoryFilterDto;
+import open.code.dto.bic_dto.PayerDto;
 import open.code.exception.bic_exception.BicEntryNotFoundException;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;

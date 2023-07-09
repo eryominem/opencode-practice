@@ -70,8 +70,8 @@ public class EntityService {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             BankMessageDto bankMessageDto = (BankMessageDto) unmarshaller.unmarshal(file);
             bankMessageDto.setCreatedBy(SecurityUtil.extractNameCurrentUser());
-            bankMessageDto.setFileName(file.getName());
-            bankMessageDto.setTitle(file.getName());
+            bankMessageDto.setFileName(extractFileName(file));
+            bankMessageDto.setTitle(bankMessageDto.getFileName());
             saveEntitiesFromXml(transformDtoToBankMessage(bankMessageDto));
             log.info("File uploaded and entities saved successfully");
             return ResponseEntity.ok("File uploaded and entities saved successfully");
@@ -134,5 +134,10 @@ public class EntityService {
         FileCopyUtils.copy(multipartFile.getBytes(), file);
         log.info("File converted successfully");
         return file;
+    }
+
+    private String extractFileName(File file) {
+        String[] splittedPath = file.getName().split("\\\\");
+        return splittedPath[splittedPath.length - 1];
     }
 }

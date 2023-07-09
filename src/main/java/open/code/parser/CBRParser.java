@@ -41,12 +41,12 @@ public class CBRParser {
         String fileName = null;
         try (ZipInputStream zin = new ZipInputStream(new FileInputStream(file))) {
             ZipEntry entry;
-            String name;
+            String originalName;
             while ((entry = zin.getNextEntry()) != null) {
-                name = entry.getName();
-                System.out.printf("File name: %s \n", name);
-                fileName = PATH_STORAGE_DATA + name;
-                FileOutputStream fout = new FileOutputStream(PATH_STORAGE_DATA + name);
+                originalName = entry.getName();
+                System.out.printf("File name: %s \n", originalName);
+                fileName = PATH_STORAGE_DATA + originalName;
+                FileOutputStream fout = new FileOutputStream(PATH_STORAGE_DATA + originalName);
                 for (int c = zin.read(); c != -1; c = zin.read()) {
                     fout.write(c);
                 }
@@ -59,29 +59,5 @@ public class CBRParser {
         }
         return fileName;
     }
-
-    /*public void unzipXml(URL fileURL, Path destDir) {
-        try {
-            ZipInputStream zipInputStream = new ZipInputStream(
-                    Channels.newInputStream(Channels.newChannel(fileURL.openStream())));
-            for (ZipEntry ze; (ze = zipInputStream.getNextEntry()) != null; ) {
-                Path resolvedPath = destDir.resolve(ze.getName()).normalize();
-                if (ze.isDirectory()) {
-                    Files.createDirectories(resolvedPath);
-                } else try (FileChannel fileChannel = FileChannel.open(resolvedPath, WRITE, CREATE)) {
-                    fileChannel.transferFrom(Channels.newChannel(zipInputStream), 0, Long.MAX_VALUE);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-/*public void downloadXmlFromCBR() throws IOException {
-        URL url = new URL(FILE_URL);
-        Path path = Path.of(PATH_STORAGE_DATA);
-        unzipXml(url, path);
-    }*/
-
 
 }

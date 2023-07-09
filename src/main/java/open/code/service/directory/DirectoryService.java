@@ -3,7 +3,6 @@ package open.code.service.directory;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import open.code.dto.directory_dto.DirectoryFilterDto;
-import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.exception.directory_exception.DirectoryNotFoundException;
 import open.code.exception.directory_exception.DirectoryTypeException;
 import open.code.model.Directory;

@@ -1,16 +1,14 @@
 version: '2.1'
 services:
   backend:
-    build:
-      dockerfile: ./Dockerfile
+    image: cherdak163/opencode-backend:latest
     container_name: backend-container
     ports:
       - "9090:9090"
     networks:
       app-network:
-        - aliases:
-            - "backend"
-
+        aliases:
+          - "backend"
 
   frontend:
     image: solituude/opencode-front:latest

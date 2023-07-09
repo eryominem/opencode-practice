@@ -4,8 +4,6 @@ import jakarta.transaction.Transactional;
 import open.code.model.Directory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,10 +16,6 @@ public interface DirectoryRepository extends JpaRepository<Directory, Long>, Jpa
     Page<Directory> findAllByDirectoryTypeAndDeletedIsFalse(String directoryType, PageRequest pageRequest);
 
     Page<Directory> findAllByDirectoryTypeAndDeletedIsTrue(String directoryType, PageRequest pageRequest);
-
-    Page<Directory> findAllByDirectoryTypeAndDeletedIsFalse(String directoryType,
-                                                          Specification<Directory> specification,
-                                                          Pageable pageable);
 
     @Transactional
     @Modifying

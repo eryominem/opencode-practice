@@ -2,13 +2,21 @@ package open.code.service.bnk_msg;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import open.code.dto.bic_dto.PayerDto;
 import open.code.dto.ed807_dto.BankMessageFilterDto;
 import open.code.dto.ed807_dto.BankMsgViewDto;
 import open.code.exception.bankmsg_exception.BankMessageNotFoundException;
 import open.code.model.BankMessage;
+import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BankMessageRepository;
+import open.code.util.Constants;
 import open.code.util.SecurityUtil;
+import open.code.util.filter_criteria.BankMessageSpecification;
+import open.code.util.filter_criteria.BicEntrySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,32 +40,12 @@ public class BankMessageService {
         return bankMessageToBankMsgViewDto(bankMessages);
     }
 
-    public List<BankMsgViewDto> findBankMessageByFilter(BankMessageFilterDto bankMessageFilterDto) {
-        System.out.println(bankMessageFilterDto);
-        LocalDate localDate1 = bankMessageFilterDto.getDate1() == null ? LocalDate.now() : bankMessageFilterDto.getDate1();
-        LocalDate localDate2 = bankMessageFilterDto.getDate2() == null ? LocalDate.now() : bankMessageFilterDto.getDate2();
-        if (bankMessageFilterDto.getTitle() != null) {
-            if (bankMessageFilterDto.getDate1() != null && bankMessageFilterDto.getDate2() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtBetween(bankMessageFilterDto.getTitle(),
-                        localDate1, localDate2));
-            } else if (bankMessageFilterDto.getDate1() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsAfter(bankMessageFilterDto.getTitle(), localDate1));
-            } else if (bankMessageFilterDto.getDate2() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndTitleAndCreatedAtIsBefore(bankMessageFilterDto.getTitle(), localDate2));
-            } else {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findAllByDeletedFalseAndTitle(bankMessageFilterDto.getTitle()));
-            }
-        } else {
-            if (bankMessageFilterDto.getDate1() != null && bankMessageFilterDto.getDate2() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtBetween(localDate1, localDate2));
-            } else if (bankMessageFilterDto.getDate1() == null && bankMessageFilterDto.getDate2() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsBefore(localDate2));
-            } else if (bankMessageFilterDto.getDate1() != null) {
-                return bankMessageToBankMsgViewDto(bankMessageRepository.findByDeletedFalseAndCreatedAtIsAfter(localDate1));
-            } else {
-                throw new BankMessageNotFoundException("BankMessage not found");
-            }
-        }
+    public Page<BankMsgViewDto> findBankMessageByFilter(BankMessageFilterDto bankMessageFilterDto, int page) {
+        if (bankMessageFilterDto == null)
+            throw new BankMessageNotFoundException("Not found");
+        Specification<BankMessage> specification = new BankMessageSpecification(bankMessageFilterDto);
+        return bankMessageRepository.findAll(specification, PageRequest.of(page, Constants.PAGE_SIZE))
+                .map(BankMsgViewDto::build);
     }
 
     @Transactional

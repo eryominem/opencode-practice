@@ -3,6 +3,7 @@ package open.code.repository.bnk_msg;
 import jakarta.transaction.Transactional;
 import open.code.model.BankMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface BankMessageRepository extends JpaRepository<BankMessage, Long> {
+public interface BankMessageRepository extends JpaRepository<BankMessage, Long>, JpaSpecificationExecutor<BankMessage> {
 
     List<BankMessage> findByDeletedFalse();
 

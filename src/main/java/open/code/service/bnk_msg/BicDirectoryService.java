@@ -7,13 +7,12 @@ import open.code.exception.bic_exception.BicEntryNotFoundException;
 import open.code.model.BicDirectoryEntry;
 import open.code.repository.bnk_msg.BicDirectoryEntryRepository;
 import open.code.util.Constants;
+import open.code.util.filter_criteria.BicEntrySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -40,36 +39,11 @@ public class BicDirectoryService {
         return bicDirectoryEntryRepository.countByBankMessageId(msgId);
     }
 
-    public List<PayerDto> findAllPayersByFilter(BicDirectoryFilterDto bicDirectoryFilterDto) {
-        if (bicDirectoryFilterDto.getBic() != null) {
-            if (bicDirectoryFilterDto.getNameP() != null && bicDirectoryFilterDto.getPtType() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getBic(),
-                        bicDirectoryFilterDto.getNameP(), bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
-            else if (bicDirectoryFilterDto.getNameP() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoNamePAndBankMessageId(bicDirectoryFilterDto.getBic(),
-                        bicDirectoryFilterDto.getNameP(), bicDirectoryFilterDto.getMsgId()));
-            else if (bicDirectoryFilterDto.getPtType() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getBic(),
-                        bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
-            else
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByBicAndBankMessageId(bicDirectoryFilterDto.getBic(), bicDirectoryFilterDto.getMsgId()));
-        } else {
-            if (bicDirectoryFilterDto.getNameP() != null && bicDirectoryFilterDto.getPtType() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getNameP(),
-                        bicDirectoryFilterDto.getPtType(), bicDirectoryFilterDto.getMsgId()));
-            if (bicDirectoryFilterDto.getNameP() == null && bicDirectoryFilterDto.getPtType() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoPtTypeAndBankMessageId(bicDirectoryFilterDto.getPtType(),
-                        bicDirectoryFilterDto.getMsgId()));
-            if (bicDirectoryFilterDto.getNameP() != null)
-                return bicDirectoryToPayers(bicDirectoryEntryRepository.findAllByParticipantInfoNamePAndBankMessageId(bicDirectoryFilterDto.getNameP(),
-                        bicDirectoryFilterDto.getMsgId()));
-            else
-                throw new BicEntryNotFoundException("Not found");
-        }
-    }
-
-    private List<PayerDto> bicDirectoryToPayers(List<BicDirectoryEntry> bicDirectoryEntries) {
-        return bicDirectoryEntries.stream().map((x) -> new PayerDto(x, x.getParticipantInfo()))
-                .collect(Collectors.toList());
+    public Page<PayerDto> findAllPayersByFilter(BicDirectoryFilterDto bicDirectoryFilterDto, int page) {
+        if (bicDirectoryFilterDto == null)
+            throw new BicEntryNotFoundException("Not found");
+        Specification<BicDirectoryEntry> specification = new BicEntrySpecification(bicDirectoryFilterDto);
+        return bicDirectoryEntryRepository.findAll(specification, PageRequest.of(page, Constants.PAGE_SIZE))
+                .map((x) -> new PayerDto(x, x.getParticipantInfo()));
     }
 }

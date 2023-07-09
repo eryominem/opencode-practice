@@ -5,6 +5,7 @@ import open.code.dto.ed807_dto.BankMsgViewDto;
 import open.code.parser.CBRParser;
 import open.code.service.bnk_msg.BankMessageService;
 import open.code.service.bnk_msg.EntityService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,14 @@ public class BankMessageController {
     }
 
     @PostMapping(value = "/filter")
-    public List<BankMsgViewDto> messageFilter(@RequestBody BankMessageFilterDto bankMessageFilterDto) {
-        return bankMessageService.findBankMessageByFilter(bankMessageFilterDto);
+    public Page<BankMsgViewDto> messageFilter(@RequestBody BankMessageFilterDto bankMessageFilterDto,
+                                              @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return bankMessageService.findBankMessageByFilter(bankMessageFilterDto, page);
     }
 
     @GetMapping("/actualization")
     public ResponseEntity<?> uploadActualFile() {
-         return entityService.saveEntitiesFromXml(cbrParser.download());
+        return entityService.saveEntitiesFromXml(cbrParser.download());
     }
 
     @PostMapping("/upload")

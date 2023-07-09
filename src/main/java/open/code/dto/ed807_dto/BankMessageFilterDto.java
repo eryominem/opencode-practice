@@ -15,4 +15,6 @@ public class BankMessageFilterDto {
     private LocalDate date1;
 
     private LocalDate date2;
+
+    private Boolean deleted;
 }

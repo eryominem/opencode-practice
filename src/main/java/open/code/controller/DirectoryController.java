@@ -25,8 +25,7 @@ public class DirectoryController {
     @PostMapping("/add/{type}")
     @ResponseStatus(HttpStatus.CREATED)
     public Directory add(@RequestBody DirectoryDto directoryDto,
-                         @PathVariable("type") String directoryType,
-                         @RequestParam Long msgId) {
+                         @PathVariable("type") String directoryType) {
         return directoryService.add(directoryDto, directoryType);
     }
 
@@ -42,7 +41,7 @@ public class DirectoryController {
         return directoryService.getAllDeleted(directoryType, page);
     }
 
-    @GetMapping("/filter/{type}")
+    @PostMapping("/filter/{type}")
     public Page<Directory> getByFilter(@PathVariable("type") String directoryType,
                                        @RequestBody DirectoryFilterDto directoryFilterDto,
                                        @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
